@@ -20,6 +20,8 @@ object Libs {
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.2.0-rc01"
         const val coreKtx = "androidx.core:core-ktx:1.5.0-alpha01"
+        const val activityKtx = "androidx.activity:activity-ktx:1.2.0-beta01"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.3.0-beta01"
 
         const val junit = "junit:junit:4.13"
 

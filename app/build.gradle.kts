@@ -53,6 +53,8 @@ dependencies {
 
     implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.appcompat)
+    implementation(Libs.AndroidX.activityKtx)
+    implementation(Libs.AndroidX.fragmentKtx)
     implementation(Libs.AndroidX.material)
     implementation(Libs.AndroidX.Compose.compiler)
     implementation(Libs.AndroidX.Compose.runtime)
