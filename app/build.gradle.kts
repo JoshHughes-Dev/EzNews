@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -22,8 +24,8 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -47,10 +49,11 @@ android {
 dependencies {
 
     implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Kotlin.Coroutines.android)
+
     implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.material)
-
     implementation(Libs.AndroidX.Compose.compiler)
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
@@ -59,11 +62,34 @@ dependencies {
     implementation(Libs.AndroidX.Compose.material)
     implementation(Libs.AndroidX.Compose.animation)
     implementation(Libs.AndroidX.Compose.materialIconsExtended)
-    implementation(Libs.AndroidX.Compose.tooling)
     implementation(Libs.AndroidX.Compose.runtimeLivedata)
+    implementation(Libs.AndroidX.Lifecycle.viewModelKtx)
+    implementation(Libs.AndroidX.UI.tooling)
 
+    implementation(Libs.Accompanist.insets)
+    implementation(Libs.Accompanist.coil)
+
+    implementation(Libs.Hilt.android)
+    implementation(Libs.Hilt.AndroidX.viewModel)
+    kapt(Libs.Hilt.compiler)
+    kapt(Libs.Hilt.AndroidX.compiler)
+
+    implementation(Libs.Moshi.moshi)
+    implementation(Libs.Retrofit.retrofit)
+    implementation(Libs.Retrofit.moshiConverter)
 
     testImplementation(Libs.JUnit.junit)
-    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
+
+    androidTestImplementation(Libs.JUnit.junit)
+    androidTestImplementation(Libs.AndroidX.Test.runner)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    androidTestImplementation(Libs.AndroidX.Test.rules)
+    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
+    androidTestImplementation(Libs.Kotlin.Coroutines.test)
+    androidTestImplementation(Libs.AndroidX.UI.uiTest)
+    androidTestImplementation(Libs.Hilt.android)
+    androidTestImplementation(Libs.Hilt.AndroidX.viewModel)
+    androidTestImplementation(Libs.Hilt.testing)
+    kaptAndroidTest(Libs.Hilt.compiler)
+    kaptAndroidTest(Libs.Hilt.AndroidX.compiler)
 }
