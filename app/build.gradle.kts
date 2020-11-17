@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.jhughes.eznews.HiltAppTestRunner"
     }
 
     buildTypes {
@@ -72,8 +72,8 @@ dependencies {
     implementation(Libs.Accompanist.coil)
 
     implementation(Libs.Hilt.android)
-    implementation(Libs.Hilt.AndroidX.viewModel)
     kapt(Libs.Hilt.compiler)
+    implementation(Libs.Hilt.AndroidX.viewModel)
     kapt(Libs.Hilt.AndroidX.compiler)
 
     implementation(Libs.Moshi.moshi)
@@ -81,6 +81,11 @@ dependencies {
     implementation(Libs.Retrofit.moshiConverter)
 
     testImplementation(Libs.JUnit.junit)
+    testImplementation(Libs.Hilt.android)
+    testImplementation(Libs.Hilt.testing)
+    kaptTest(Libs.Hilt.compiler)
+    testImplementation(Libs.Hilt.AndroidX.viewModel)
+    kaptTest(Libs.Hilt.AndroidX.compiler)
 
     androidTestImplementation(Libs.JUnit.junit)
     androidTestImplementation(Libs.AndroidX.Test.runner)
@@ -89,9 +94,10 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
     androidTestImplementation(Libs.Kotlin.Coroutines.test)
     androidTestImplementation(Libs.AndroidX.UI.uiTest)
+
     androidTestImplementation(Libs.Hilt.android)
-    androidTestImplementation(Libs.Hilt.AndroidX.viewModel)
     androidTestImplementation(Libs.Hilt.testing)
     kaptAndroidTest(Libs.Hilt.compiler)
+    androidTestImplementation(Libs.Hilt.AndroidX.viewModel)
     kaptAndroidTest(Libs.Hilt.AndroidX.compiler)
 }

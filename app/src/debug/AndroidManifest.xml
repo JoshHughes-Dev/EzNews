@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.jhughes.eznews">
+
+    <application>
+        <!-- Needed for UI tests - https://issuetracker.google.com/162419586 -->
+        <activity android:name="androidx.activity.ComponentActivity" />
+    </application>
+
+</manifest>
