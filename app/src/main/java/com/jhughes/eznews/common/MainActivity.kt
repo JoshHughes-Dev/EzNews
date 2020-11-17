@@ -1,4 +1,4 @@
-package com.jhughes.eznews
+package com.jhughes.eznews.common
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
-import com.jhughes.eznews.ui.EzNewsTheme
+import com.jhughes.eznews.common.theme.EzNewsTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

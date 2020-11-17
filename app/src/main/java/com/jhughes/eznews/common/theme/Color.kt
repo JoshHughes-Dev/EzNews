@@ -1,4 +1,4 @@
-package com.jhughes.eznews.ui
+package com.jhughes.eznews.common.theme
 
 import androidx.compose.ui.graphics.Color
 

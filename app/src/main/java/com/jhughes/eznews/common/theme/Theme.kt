@@ -1,4 +1,4 @@
-package com.jhughes.eznews.ui
+package com.jhughes.eznews.common.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
