@@ -96,12 +96,15 @@ dependencies {
     debugImplementation(Libs.Chucker.chucker)
     releaseImplementation(Libs.Chucker.noOp)
 
+    testImplementation(Libs.mockk)
+    testImplementation(Libs.Kotlin.Coroutines.test)
     testImplementation(Libs.JUnit.junit)
     testImplementation(Libs.Hilt.android)
     testImplementation(Libs.Hilt.testing)
     kaptTest(Libs.Hilt.compiler)
     testImplementation(Libs.Hilt.AndroidX.viewModel)
     kaptTest(Libs.Hilt.AndroidX.compiler)
+    testImplementation(Libs.AndroidX.Paging.common)
 
     androidTestImplementation(Libs.JUnit.junit)
     androidTestImplementation(Libs.AndroidX.Test.runner)
@@ -110,7 +113,6 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
     androidTestImplementation(Libs.Kotlin.Coroutines.test)
     androidTestImplementation(Libs.AndroidX.UI.uiTest)
-
     androidTestImplementation(Libs.Hilt.android)
     androidTestImplementation(Libs.Hilt.testing)
     kaptAndroidTest(Libs.Hilt.compiler)

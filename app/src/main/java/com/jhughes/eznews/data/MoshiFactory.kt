@@ -6,8 +6,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.*
 
 object MoshiFactory {
-
-    fun create() : Moshi {
+    fun create(): Moshi {
         return Moshi.Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter())
             .addLast(KotlinJsonAdapterFactory())

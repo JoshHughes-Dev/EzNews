@@ -1,5 +1,6 @@
-package com.jhughes.eznews.data.remote.model
+package com.jhughes.eznews.data.remote.model.response
 
+import com.jhughes.eznews.data.remote.model.NewsArticle
 import com.squareup.moshi.Json
 
 data class HeadlinesResponse(

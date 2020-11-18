@@ -1,6 +1,7 @@
-package com.jhughes.eznews.data.remote.model
+package com.jhughes.eznews.domain.model
 
 enum class NewsCategory {
+    ALL,
     BUSINESS,
     ENTERTAINMENT,
     HEALTH,

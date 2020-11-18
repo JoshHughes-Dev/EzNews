@@ -1,6 +1,6 @@
 package com.jhughes.eznews.data.remote
 
-import com.jhughes.eznews.data.remote.model.HeadlinesResponse
+import com.jhughes.eznews.data.remote.model.response.HeadlinesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
