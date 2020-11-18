@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
@@ -28,7 +31,15 @@ class MainActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     val greeting: State<String> =
                         headlinesViewModel.dummyData.collectAsState(initial = "")
-                    Greeting(greeting.value)
+
+                    val data = headlinesViewModel.headlinesData.collectAsState(initial = emptyList())
+
+                    headlinesViewModel.refreshHeadlines()
+
+                    Column {
+                        Greeting(greeting.value)
+                        Text(data.value.joinToString { it.toString() })
+                    }
                 }
             }
         }

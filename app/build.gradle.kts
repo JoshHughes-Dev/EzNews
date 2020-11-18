@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -17,6 +19,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "com.jhughes.eznews.HiltAppTestRunner"
+
+        buildConfigField(
+            "String",
+            "NEWS_API_KEY",
+            "\"${gradleLocalProperties(rootDir).getProperty("NEWS_ORG_API_KEY") as String}\""
+        )
     }
 
     buildTypes {
@@ -67,6 +75,8 @@ dependencies {
     implementation(Libs.AndroidX.Compose.runtimeLivedata)
     implementation(Libs.AndroidX.Lifecycle.viewModelKtx)
     implementation(Libs.AndroidX.UI.tooling)
+    implementation(Libs.AndroidX.Paging.runtime)
+    implementation(Libs.AndroidX.Paging.compose)
 
     implementation(Libs.Accompanist.insets)
     implementation(Libs.Accompanist.coil)
@@ -77,8 +87,14 @@ dependencies {
     kapt(Libs.Hilt.AndroidX.compiler)
 
     implementation(Libs.Moshi.moshi)
+    implementation(Libs.Moshi.kotlin)
+    implementation(Libs.Moshi.adapters)
+    implementation(Libs.okHttpLogging)
     implementation(Libs.Retrofit.retrofit)
     implementation(Libs.Retrofit.moshiConverter)
+
+    debugImplementation(Libs.Chucker.chucker)
+    releaseImplementation(Libs.Chucker.noOp)
 
     testImplementation(Libs.JUnit.junit)
     testImplementation(Libs.Hilt.android)

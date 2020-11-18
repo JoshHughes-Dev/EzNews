@@ -4,6 +4,8 @@ object Libs {
 
     const val junit = "junit:junit:4.13"
 
+    const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
     object Kotlin {
         const val version = "1.4.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
@@ -46,6 +48,12 @@ object Libs {
         object Lifecycle {
             private const val version = "2.3.0-beta01"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+        }
+
+        object Paging {
+            private const val version = "3.0.0-alpha09"
+            const val runtime = "androidx.paging:paging-runtime:$version"
+            const val compose = "androidx.paging:paging-compose:1.0.0-alpha02"
         }
 
         object UI {
@@ -93,6 +101,8 @@ object Libs {
     object Moshi {
         private const val version = "1.11.0"
         const val moshi = "com.squareup.moshi:moshi:$version"
+        const val kotlin = "com.squareup.moshi:moshi-kotlin:$version"
+        const val adapters = "com.squareup.moshi:moshi-adapters:$version"
     }
 
     object Retrofit {
@@ -104,5 +114,11 @@ object Libs {
     object JUnit {
         private const val version = "4.13"
         const val junit = "junit:junit:$version"
+    }
+
+    object Chucker {
+        private const val version = "3.4.0"
+        const val chucker = "com.github.chuckerteam.chucker:library:$version"
+        const val noOp = "com.github.chuckerteam.chucker:library-no-op:$version"
     }
 }
