@@ -21,3 +21,5 @@ val Red300 = Color(0xFFEA6D7E)
 val Red800 = Color(0xFFD00036)
 
 const val AlphaNearOpaque = 0.95f
+
+const val SystemBarOpaque = 0.70f

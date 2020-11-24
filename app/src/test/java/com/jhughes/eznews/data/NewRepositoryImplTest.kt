@@ -4,6 +4,7 @@ import com.jhughes.eznews.CoroutineTestRule
 import com.jhughes.eznews.data.remote.NewsApiService
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

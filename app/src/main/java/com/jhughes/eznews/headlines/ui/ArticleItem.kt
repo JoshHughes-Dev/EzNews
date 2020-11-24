@@ -43,7 +43,7 @@ fun ArticleItem(
         Column() {
             Surface(color = Color.LightGray) {
                 CoilImage(
-                    modifier = Modifier.aspectRatio(1.9f),
+                    modifier = Modifier.aspectRatio(1.85f),
                     data = article.urlToImage ?: "",
                     contentScale = ContentScale.FillWidth,
                     fadeIn = true,

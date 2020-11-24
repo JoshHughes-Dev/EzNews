@@ -19,6 +19,18 @@ subprojects {
         mavenCentral()
         jcenter()
     }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            // Use experimental APIs
+            freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
+                add("-Xopt-in=kotlin.RequiresOptIn")
+                add("-Xallow-jvm-ir-dependencies")
+                add("-Xskip-prerelease-check")
+            }
+        }
+    }
 }
 
 tasks.register("clean", Delete::class) {

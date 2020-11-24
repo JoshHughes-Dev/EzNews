@@ -15,7 +15,12 @@ class NewsRepositoryImpl @Inject constructor(
 ) : NewsRepository {
 
     override fun topNewsHeadlines(headlinesPagingKey: HeadlinesPagingKey): Flow<PagingData<Article>> {
-        return Pager(PagingConfig(pageSize = headlinesPagingKey.pageSize)) {
+        return Pager(
+            PagingConfig(
+                pageSize = headlinesPagingKey.pageSize,
+                prefetchDistance = headlinesPagingKey.pageSize.div(4)
+            )
+        ) {
             PageKeyedHeadlinesPagingSource(
                 initialKey = headlinesPagingKey,
                 newsApiService = newsApiService

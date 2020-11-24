@@ -45,12 +45,12 @@ fun EzNewsTheme(
         LightColorPalette
     }
 
-    val sysUiController = SysUiController.current
-    onCommit(sysUiController, colors.surface) {
-        sysUiController.setSystemBarsColor(
-            color = colors.surface.copy(alpha = AlphaNearOpaque)
-        )
-    }
+//    val sysUiController = SysUiController.current
+//    onCommit(sysUiController, colors.surface) {
+//        sysUiController.setSystemBarsColor(
+//            color = colors.surface.copy(alpha = AlphaNearOpaque)
+//        )
+//    }
 
     MaterialTheme(
         colors = colors,

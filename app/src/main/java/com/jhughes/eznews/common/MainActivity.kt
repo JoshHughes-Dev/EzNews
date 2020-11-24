@@ -1,6 +1,7 @@
 package com.jhughes.eznews.common
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
@@ -21,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            EzNewsApp(window = window) {
-                TopHeadlines(headlinesViewModel)
+            EzNewsApp(window = window, backDispatcher = onBackPressedDispatcher) {
+                TopHeadlines(viewModel = headlinesViewModel)
             }
         }
     }
