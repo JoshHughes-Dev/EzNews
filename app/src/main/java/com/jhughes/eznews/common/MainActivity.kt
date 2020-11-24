@@ -4,11 +4,16 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.platform.setContent
 import androidx.core.view.WindowCompat
+import com.jhughes.eznews.articledetails.ui.ArticleDetails
+import com.jhughes.eznews.common.data.toDomain
 import com.jhughes.eznews.headlines.HeadlinesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.jhughes.eznews.headlines.ui.TopHeadlines
+import com.jhughes.eznews.settings.ui.SettingsLayout
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,8 +27,26 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            EzNewsApp(window = window, backDispatcher = onBackPressedDispatcher) {
-                TopHeadlines(viewModel = headlinesViewModel)
+            EzNewsApp(
+                window = window,
+                backDispatcher = onBackPressedDispatcher
+            ) { navigator, actions ->
+
+                Crossfade(navigator.current) { destination ->
+                    when (destination) {
+                        is Destination.TopHeadlines -> TopHeadlines(
+                            viewModel = headlinesViewModel,
+                            actions = actions
+                        )
+                        is Destination.Settings -> SettingsLayout(closeSettings = actions.upPress)
+                        is Destination.ArticleDetails -> {
+                            ArticleDetails(
+                                article = destination.article.toDomain(),
+                                closeDetails = actions.upPress
+                            )
+                        }
+                    }
+                }
             }
         }
     }

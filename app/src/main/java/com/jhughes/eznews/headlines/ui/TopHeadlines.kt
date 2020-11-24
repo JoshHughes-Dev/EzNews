@@ -1,6 +1,12 @@
 package com.jhughes.eznews.headlines.ui
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
@@ -10,31 +16,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jhughes.eznews.common.Actions
 import com.jhughes.eznews.common.theme.SystemBarOpaque
 import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.common.utils.backHandler
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.headlines.HeadlinesViewModel
+import com.jhughes.eznews.headlines.data.HeadlinesModalController
+import dev.chrisbanes.accompanist.insets.statusBarsHeight
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TopHeadlines(viewModel: HeadlinesViewModel) {
+fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
 
+    //we'll use a view to apply a scrim to status bar instead of coloring it directly.
+    //This is so it still looks good when the bottom sheet modal scrim
     with(SysUiController.current) {
-        setStatusBarColor(MaterialTheme.colors.background.copy(alpha = SystemBarOpaque))
+        setStatusBarColor(Color.Transparent, darkIcons = !isSystemInDarkTheme())
         setNavigationBarColor(Color.Transparent)
     }
 
-    val categoryFilterSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val countryFilterSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val newsSelection: State<HeadlinesPagingKey> = viewModel.newsSelection.collectAsState()
 
-    HeadlinesModalBottomSheetLayout(
-        viewModel = viewModel,
-        categoryFilterSheetState = categoryFilterSheetState,
-        countryFilterSheetState = countryFilterSheetState
-    ) {
+    HeadlinesModalBottomSheetLayout(viewModel = viewModel) { controller ->
         Box {
             Surface(color = MaterialTheme.colors.background) {
                 NewsFeed(
@@ -44,25 +49,33 @@ fun TopHeadlines(viewModel: HeadlinesViewModel) {
                             modifier = Modifier.statusBarsPadding(),
                             newsSelection = newsSelection.value,
                             onRequestSelectCategory = {
-                                categoryFilterSheetState.show()
+                                controller.showCategoryFilterModal()
                             },
                             onRequestSelectCountry = {
-                                countryFilterSheetState.show()
+                                controller.showCountryFilterModal()
                             }
                         )
-                    }
+                    },
+                    onSelectArticle = actions.selectArticle
                 )
             }
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .statusBarsPadding()
-                    .padding(end = 16.dp)
+                    .padding(top = 8.dp, end = 16.dp)
                     .preferredSize(48.dp),
-                onClick = { }
+                onClick = actions.showSettings
             ) {
                 Icon(asset = Icons.Outlined.Settings)
             }
+            //status bar scrim
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsHeight()
+                .background(MaterialTheme.colors.background.copy(alpha = SystemBarOpaque))
+                .align(Alignment.TopCenter)
+            )
         }
     }
 }
@@ -71,11 +84,12 @@ fun TopHeadlines(viewModel: HeadlinesViewModel) {
 @Composable
 fun HeadlinesModalBottomSheetLayout(
     viewModel: HeadlinesViewModel,
-    categoryFilterSheetState : ModalBottomSheetState,
-    countryFilterSheetState : ModalBottomSheetState,
-    mainContent: @Composable () -> Unit
+    mainContent: @Composable (controller: HeadlinesModalController) -> Unit
 ) {
     //nesting two bottom sheet modal because changing the sheet content dynamically causes issues
+
+    val categoryFilterSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val countryFilterSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
     backHandler(
         enabled = categoryFilterSheetState.value != ModalBottomSheetValue.Hidden,
@@ -103,7 +117,14 @@ fun HeadlinesModalBottomSheetLayout(
                     countryFilterSheetState.hide()
                 }
             },
-            content = mainContent
+            content = {
+                mainContent(
+                    HeadlinesModalController(
+                        categoryFilterSheetState,
+                        countryFilterSheetState
+                    )
+                )
+            }
         )
     }
 }

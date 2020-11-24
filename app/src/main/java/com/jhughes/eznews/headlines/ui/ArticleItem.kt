@@ -2,14 +2,18 @@ package com.jhughes.eznews.headlines.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.outlined.Error
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,29 +38,42 @@ fun ArticleItem(
     article: Article,
     onClick: (Article) -> Unit = {},
 ) {
+    val context = ContextAmbient.current
     Card(
         elevation = 8.dp,
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.fillMaxWidth()
-            .clickable(onClick = { onClick(article) })
+            .clickable(onClick = {
+                openArticle(article, context)
+                //onClick(article)
+            })
     ) {
         Column() {
-            Surface(color = Color.LightGray) {
+            val imageBackground = if (!isSystemInDarkTheme()) {
+                Color.LightGray
+            } else {
+                Color.DarkGray
+            }
+            Surface(color = imageBackground) {
                 CoilImage(
-                    modifier = Modifier.aspectRatio(1.85f),
+                    modifier = Modifier.aspectRatio(1.80f),
                     data = article.urlToImage ?: "",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.Crop,
                     fadeIn = true,
                     loading = {
                         Box(Modifier.fillMaxWidth()) {
-                            CircularProgressIndicator(Modifier.align(Alignment.Center))
+                            Image(
+                                modifier = Modifier.preferredSize(24.dp).align(Alignment.Center),
+                                asset = Icons.Outlined.Image,
+                                colorFilter = ColorFilter.tint(contentColorFor(color = Color.Gray))
+                            )
                         }
                     },
                     error = {
                         Box(Modifier.fillMaxWidth()) {
                             Image(
-                                modifier = Modifier.preferredSize(48.dp).align(Alignment.Center),
-                                asset = Icons.Filled.Error,
+                                modifier = Modifier.preferredSize(24.dp).align(Alignment.Center),
+                                asset = Icons.Outlined.Error,
                                 colorFilter = ColorFilter.tint(MaterialTheme.colors.error)
                             )
                         }
@@ -99,7 +116,6 @@ fun ArticleItem(
                         style = MaterialTheme.typography.caption
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    val context = ContextAmbient.current
                     IconButton(
                         onClick = { shareArticle(article, context) }
                     ) {
@@ -114,7 +130,7 @@ fun ArticleItem(
     }
 }
 
-private fun formatArticleTitle(title : String) : String {
+private fun formatArticleTitle(title: String): String {
     return title.substringBeforeLast(delimiter = " - ")
 }
 
@@ -127,10 +143,15 @@ private fun shareArticle(article: Article, context: Context) {
     context.startActivity(Intent.createChooser(intent, "Share Article"))
 }
 
-private fun formatTimeSincePublished(date : Date) : String {
+private fun openArticle(article: Article, context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
+    context.startActivity(intent)
+}
+
+private fun formatTimeSincePublished(date: Date): String {
     val now = Calendar.getInstance().time
-    val difference : Long = abs(date.time - now.time)
-    val differenceInHours : Long = difference / (60 * 60 * 1000)
+    val difference: Long = abs(date.time - now.time)
+    val differenceInHours: Long = difference / (60 * 60 * 1000)
     return "$differenceInHours hours ago"
 }
 
@@ -147,7 +168,7 @@ private val dummyData = Article(
 @Preview(widthDp = 380)
 @Composable
 fun ArticleItemPreview() {
-    EzNewsTheme {
+    EzNewsTheme(darkTheme = false) {
         ArticleItem(article = dummyData)
     }
 }

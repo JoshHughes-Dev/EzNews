@@ -19,7 +19,9 @@ class HeadlinesViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _newsSelection : MutableStateFlow<HeadlinesPagingKey> = MutableStateFlow(HeadlinesPagingKey())
+    private val _newsSelection : MutableStateFlow<HeadlinesPagingKey> = MutableStateFlow(
+        HeadlinesPagingKey(category = NewsCategory.values().random())
+    )
 
     val newsSelection : StateFlow<HeadlinesPagingKey> = _newsSelection
 

@@ -1,32 +1,40 @@
-package com.jhughes.eznews.articledetails
+package com.jhughes.eznews.articledetails.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.ui.WebComponent
+import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Source
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import java.util.*
 
 @Composable
-fun ArticleDetails(article : Article) {
+fun ArticleDetails(article : Article, closeDetails : () -> Unit = {}) {
+
+    with(SysUiController.current) {
+        setStatusBarColor(MaterialTheme.colors.primarySurface)
+        setNavigationBarColor(Color.Transparent)
+    }
+
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = article.author.toString()) },
+            modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
-                IconButton(onClick = { }) {
+                IconButton(onClick = closeDetails) {
                     Icon(asset = Icons.Default.Close)
                 }
             }
         )
     }) {
-        WebComponent(modifier = Modifier.fillMaxSize(),
-            urlToRender = article.url!!)
+        WebComponent(urlToRender = article.url!!)
     }
 }
 
