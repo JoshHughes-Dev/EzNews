@@ -12,3 +12,15 @@ enum class NewsCategory(@StringRes val res : Int) {
     SPORTS(R.string.sport),
     TECHNOLOGY(R.string.technology)
 }
+
+fun NewsCategory.emoji() : String {
+    return when(this) {
+        NewsCategory.ALL -> String(Character.toChars(0x1F4F0))
+        NewsCategory.BUSINESS -> String(Character.toChars(0x1F4C8))
+        NewsCategory.ENTERTAINMENT -> String(Character.toChars(0x1F3AD))
+        NewsCategory.HEALTH -> String(Character.toChars(0x1FA7A))
+        NewsCategory.SCIENCE -> String(Character.toChars(0x1F52C))
+        NewsCategory.SPORTS -> String(Character.toChars(0x1F3BE))
+        NewsCategory.TECHNOLOGY -> String(Character.toChars(0x1F4BB))
+    }
+}

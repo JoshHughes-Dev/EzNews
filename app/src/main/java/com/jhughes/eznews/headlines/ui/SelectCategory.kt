@@ -16,6 +16,8 @@ import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.ui.LazyGridFor
 import com.jhughes.eznews.domain.model.NewsCategory
 import com.jhughes.eznews.R
+import com.jhughes.eznews.common.utils.toFlagEmoji
+import com.jhughes.eznews.domain.model.emoji
 
 @Composable
 fun SelectCategory(
@@ -37,16 +39,16 @@ fun SelectCategory(
             items = NewsCategory.values().toList(),
             rowSize = 2
         ) { category ->
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .preferredHeight(74.dp)
-                .clickable(onClick = { onSelectCategory(category) })
-                .padding(8.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .preferredHeight(74.dp)
+                    .clickable(onClick = { onSelectCategory(category) })
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(id = category.res)
-                )
+                Text(text = category.emoji())
+                Text(text = stringResource(id = category.res))
             }
         }
     }

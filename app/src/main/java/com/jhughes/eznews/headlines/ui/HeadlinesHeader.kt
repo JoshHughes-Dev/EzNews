@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Country
@@ -18,6 +19,7 @@ import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
 import com.jhughes.eznews.R
 import com.jhughes.eznews.common.utils.toFlagEmoji
+import com.jhughes.eznews.domain.model.emoji
 
 @OptIn(ExperimentalLayout::class)
 @Composable
@@ -62,7 +64,8 @@ fun HeadlinesHeader(
                             end = 8.dp
                         ), onClick = onRequestSelectCategory
                     ) {
-                        HeadlineTitleText(text = stringResource(id = newsSelection.category.res))
+                        HeadlineTitleText(
+                            text = "${stringResource(id = newsSelection.category.res).toUpperCase()} ${newsSelection.category.emoji()}" )
                     }
                 }
                 HeadlineTitleText(text = " ")
@@ -70,8 +73,13 @@ fun HeadlinesHeader(
                 HeadlineTitleText(text = " ")
                 HeadlineTitleText(text = stringResource(id = R.string.across))
                 HeadlineTitleText(text = " ")
-                HeadlineTitleText(text = stringResource(id = R.string.the))
-                HeadlineTitleText(text = " ")
+
+                val countryWithThe = newsSelection.country == Country.UNITED_KINGDOM
+                        || newsSelection.country == Country.USA
+                if (countryWithThe) {
+                    HeadlineTitleText(text = stringResource(id = R.string.the))
+                    HeadlineTitleText(text = " ")
+                }
                 Button(
                     contentPadding = ButtonConstants.DefaultContentPadding.copy(
                         start = 8.dp,
@@ -80,7 +88,7 @@ fun HeadlinesHeader(
                     onClick = onRequestSelectCountry
                 ) {
                     newsSelection.country.let {
-                        HeadlineTitleText(text = "${stringResource(id = it.res)} ${it.countryCode.toFlagEmoji()}")
+                        HeadlineTitleText(text = "${stringResource(id = it.res).toUpperCase()} ${it.countryCode.toFlagEmoji()}")
                     }
                 }
             }
@@ -101,7 +109,7 @@ fun HeadlinesHeader(
 
 @Composable
 fun HeadlineTitleText(text : String) =
-    Text(text = text, fontWeight = FontWeight.Bold)
+    Text(text = text, fontWeight = FontWeight.Bold, fontSize = 16.sp)
 
 @Preview
 @Composable
@@ -110,8 +118,8 @@ fun HeaderPreview() {
         Surface() {
             HeadlinesHeader(
                 newsSelection = HeadlinesPagingKey(
-                    country = Country.USA,
-                    category = NewsCategory.HEALTH
+                    country = Country.SOUTH_AFRICA,
+                    category = NewsCategory.ENTERTAINMENT
                 )
             )
         }

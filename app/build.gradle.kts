@@ -18,8 +18,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.jhughes.eznews.HiltAppTestRunner"
-
         buildConfigField(
             "String",
             "NEWS_API_KEY",
@@ -29,8 +27,7 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -95,27 +92,4 @@ dependencies {
 
     debugImplementation(Libs.Chucker.chucker)
     releaseImplementation(Libs.Chucker.noOp)
-
-    testImplementation(Libs.mockk)
-    testImplementation(Libs.Kotlin.Coroutines.test)
-    testImplementation(Libs.JUnit.junit)
-    testImplementation(Libs.Hilt.android)
-    testImplementation(Libs.Hilt.testing)
-    kaptTest(Libs.Hilt.compiler)
-    testImplementation(Libs.Hilt.AndroidX.viewModel)
-    kaptTest(Libs.Hilt.AndroidX.compiler)
-    testImplementation(Libs.AndroidX.Paging.common)
-
-    androidTestImplementation(Libs.JUnit.junit)
-    androidTestImplementation(Libs.AndroidX.Test.runner)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
-    androidTestImplementation(Libs.AndroidX.Test.rules)
-    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
-    androidTestImplementation(Libs.Kotlin.Coroutines.test)
-    androidTestImplementation(Libs.AndroidX.UI.uiTest)
-    androidTestImplementation(Libs.Hilt.android)
-    androidTestImplementation(Libs.Hilt.testing)
-    kaptAndroidTest(Libs.Hilt.compiler)
-    androidTestImplementation(Libs.Hilt.AndroidX.viewModel)
-    kaptAndroidTest(Libs.Hilt.AndroidX.compiler)
 }

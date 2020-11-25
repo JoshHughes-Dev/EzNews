@@ -19,6 +19,7 @@ import com.jhughes.eznews.common.utils.backHandler
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.headlines.HeadlinesViewModel
 import com.jhughes.eznews.headlines.data.HeadlinesModalController
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsHeight
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 
@@ -98,8 +99,8 @@ fun HeadlinesModalBottomSheetLayout(
 
     HeadlinesFilterModalBottomSheetLayout(
         sheetState = categoryFilterSheetState,
-        sheetContent = { modifier ->
-            SelectCategory(modifier = modifier) { category ->
+        sheetContent = {
+            SelectCategory(modifier = Modifier.navigationBarsPadding()) { category ->
                 viewModel.setNewsCategory(category)
                 categoryFilterSheetState.hide()
             }
@@ -107,8 +108,8 @@ fun HeadlinesModalBottomSheetLayout(
     ) {
         HeadlinesFilterModalBottomSheetLayout(
             sheetState = countryFilterSheetState,
-            sheetContent = { modifier ->
-                SelectCountry(modifier = modifier) { country ->
+            sheetContent = {
+                SelectCountry(modifier = Modifier.navigationBarsPadding()) { country ->
                     viewModel.setCountry(country)
                     countryFilterSheetState.hide()
                 }
@@ -129,7 +130,7 @@ fun HeadlinesModalBottomSheetLayout(
 @Composable
 fun HeadlinesFilterModalBottomSheetLayout(
     sheetState: ModalBottomSheetState,
-    sheetContent: @Composable (Modifier) -> Unit,
+    sheetContent: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) = ModalBottomSheetLayout(
     sheetState = sheetState,
@@ -141,7 +142,7 @@ fun HeadlinesFilterModalBottomSheetLayout(
             Surface(
                 elevation = ModalBottomSheetConstants.DefaultElevation,
             ) {
-                sheetContent(Modifier)
+                sheetContent()
             }
         }
     },

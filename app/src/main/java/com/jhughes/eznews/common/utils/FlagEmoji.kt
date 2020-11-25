@@ -27,3 +27,4 @@ fun String?.toFlagEmoji(): String {
 
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
 }
+
