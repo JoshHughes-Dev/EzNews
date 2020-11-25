@@ -40,7 +40,7 @@ fun ArticleItem(
 ) {
     val context = ContextAmbient.current
     Card(
-        elevation = 8.dp,
+        elevation = 6.dp,
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.fillMaxWidth()
             .clickable(onClick = {

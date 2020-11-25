@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -19,7 +20,11 @@ import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.headlines.HeadlinesViewModel
+import com.jhughes.eznews.R
+import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
+import dev.chrisbanes.accompanist.insets.add
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import dev.chrisbanes.accompanist.insets.toPaddingValues
 
 @Composable
 fun NewsFeed(
@@ -34,10 +39,13 @@ fun NewsFeed(
     val feedListState = rememberLazyListState()
 
     Box(modifier = modifier) {
-        LazyColumn(state = feedListState) {
-            item {
-                headerItem()
-            }
+        LazyColumn(
+            state = feedListState,
+            contentPadding = AmbientWindowInsets.current.systemBars
+                .toPaddingValues()
+                .add(bottom = 68.dp)
+        ) {
+            item { headerItem() }
 
             when (val refreshState = lazyPagingItems.loadState.refresh) {
                 is LoadState.Loading -> {
@@ -50,14 +58,12 @@ fun NewsFeed(
                         }
                     }
                 }
-            }
-
-            if (lazyPagingItems.loadState.refresh is LoadState.NotLoading) {
-                itemsIndexed(lazyPagingItems) { index, item ->
-                    NewsFeedItem(index, item, onItemSelected = onSelectArticle)
+                is LoadState.NotLoading -> {
+                    itemsIndexed(lazyPagingItems) { index, item ->
+                        NewsFeedItem(index, item, onItemSelected = onSelectArticle)
+                    }
                 }
             }
-
             when (val appendState = lazyPagingItems.loadState.append) {
                 is LoadState.Loading -> {
                     item { NewsFeedPageLoading() }
@@ -126,12 +132,12 @@ fun NewsFeedError(error: Throwable, onRetry: () -> Unit = {}) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Cant load the latest news. Check your internet.")
+        Text(text = stringResource(id = R.string.loading_error))
         Button(
             modifier = Modifier.padding(top = 16.dp),
             onClick = onRetry
         ) {
-            Text(text = "Retry")
+            Text(text = stringResource(id = R.string.retry))
         }
     }
 }
@@ -144,7 +150,7 @@ fun NewsFeedPageLoading() {
     ) {
         Text(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 4.dp),
-            text = "Loading more..."
+            text = stringResource(R.string.page_loading)
         )
     }
 }
@@ -156,12 +162,12 @@ fun NewsFeedPageError(error: Throwable, onRetry: () -> Unit = {}) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Cant load the more news. Check your internet.")
+        Text(text = stringResource(id = R.string.loading_error))
         Button(
             modifier = Modifier.padding(top = 16.dp),
             onClick = onRetry
         ) {
-            Text(text = "Try again")
+            Text(text = stringResource(R.string.page_loading_error))
         }
     }
 }

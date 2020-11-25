@@ -1,12 +1,8 @@
 package com.jhughes.eznews.headlines.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
@@ -46,7 +42,6 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
                     headlinesViewModel = viewModel,
                     headerItem = {
                         HeadlinesHeader(
-                            modifier = Modifier.statusBarsPadding(),
                             newsSelection = newsSelection.value,
                             onRequestSelectCategory = {
                                 controller.showCategoryFilterModal()
@@ -70,11 +65,12 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
                 Icon(asset = Icons.Outlined.Settings)
             }
             //status bar scrim
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsHeight()
-                .background(MaterialTheme.colors.background.copy(alpha = SystemBarOpaque))
-                .align(Alignment.TopCenter)
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsHeight()
+                    .background(MaterialTheme.colors.background.copy(alpha = SystemBarOpaque))
+                    .align(Alignment.TopCenter)
             )
         }
     }

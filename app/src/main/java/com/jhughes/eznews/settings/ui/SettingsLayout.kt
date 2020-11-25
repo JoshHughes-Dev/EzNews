@@ -8,12 +8,15 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.utils.SysUiController
+import com.jhughes.eznews.R
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+
 
 @Composable
 fun SettingsLayout(closeSettings : () -> Unit) {
@@ -24,7 +27,7 @@ fun SettingsLayout(closeSettings : () -> Unit) {
 
     Scaffold(topBar = {
         TopAppBar(
-            title = { Text(text = "Settings") },
+            title = { Text(text = stringResource(id = R.string.settings)) },
             modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
                 IconButton(onClick = closeSettings) {
@@ -34,8 +37,8 @@ fun SettingsLayout(closeSettings : () -> Unit) {
         )
     }) {
         Column(Modifier.navigationBarsPadding().padding(20.dp)) {
-            Text(text = "About", style = MaterialTheme.typography.h6)
-            Text(text = "todo....")
+            Text(text = stringResource(id = R.string.about_title), style = MaterialTheme.typography.h6)
+            Text(text = stringResource(id = R.string.about_content))
         }
     }
 }

@@ -2,7 +2,6 @@ package com.jhughes.eznews.headlines.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -10,33 +9,39 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
+import com.jhughes.eznews.common.ui.LazyGridFor
+import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
+import com.jhughes.eznews.R
 
 @Composable
 fun SelectCountry(modifier: Modifier = Modifier, onSelectCountry: (Country) -> Unit = {}) {
-    Column {
+    Column() {
         Text(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally),
+                .align(Alignment.CenterHorizontally)
+                .padding(8.dp),
             style = MaterialTheme.typography.h6,
-            text = "Select a Country"
+            text = stringResource(id = R.string.select_country)
         )
         Divider()
-        LazyColumnFor(modifier = modifier, items = Country.values().toList()) { country ->
-            Row(
-                modifier = Modifier
-                    .preferredHeight(48.dp)
-                    .fillMaxWidth()
-                    .clickable(onClick = { onSelectCountry(country) })
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+        LazyGridFor(
+            items = Country.usableSubSet().toList(),
+            rowSize = 3
+        ) { country ->
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .preferredHeight(74.dp)
+                .clickable(onClick = { onSelectCountry(country) })
+                .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = country.name.toString()
-                )
+                Text(text = country.countryCode.toFlagEmoji())
+                Text(text = stringResource(id = country.res))
             }
         }
     }

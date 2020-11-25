@@ -1,26 +1,31 @@
 package com.jhughes.eznews.headlines.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
+import com.jhughes.eznews.R
+import com.jhughes.eznews.common.utils.toFlagEmoji
 
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun HeadlinesHeader(
     modifier: Modifier = Modifier,
     newsSelection: HeadlinesPagingKey,
-    onRequestSelectCategory : () -> Unit = {},
-    onRequestSelectCountry : () -> Unit = {}
+    onRequestSelectCategory: () -> Unit = {},
+    onRequestSelectCountry: () -> Unit = {}
 ) {
     Column(modifier) {
         Box(
@@ -28,13 +33,14 @@ fun HeadlinesHeader(
                 .padding(top = 8.dp),
             alignment = Alignment.Center
         ) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(horizontal = 54.dp),
-                text = "EzNews",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h5
+            Image(
+                asset = vectorResource(
+                    if (!isSystemInDarkTheme()) {
+                        R.drawable.ic_eznews_logo_light
+                    } else {
+                        R.drawable.ic_eznews_logo_dark
+                    }
+                )
             )
         }
         Box(
@@ -47,22 +53,35 @@ fun HeadlinesHeader(
                 crossAxisAlignment = FlowCrossAxisAlignment.Center,
                 crossAxisSpacing = 8.dp
             ) {
-                Text(text = "TOP")
+                HeadlineTitleText(text = stringResource(id = R.string.top))
                 if (newsSelection.category != NewsCategory.ALL) {
-                    Text(text = " ")
-                    Button(onClick = onRequestSelectCategory) {
-                        Text(text = newsSelection.category.name)
+                    HeadlineTitleText(text = " ")
+                    Button(
+                        contentPadding = ButtonConstants.DefaultContentPadding.copy(
+                            start = 8.dp,
+                            end = 8.dp
+                        ), onClick = onRequestSelectCategory
+                    ) {
+                        HeadlineTitleText(text = stringResource(id = newsSelection.category.res))
                     }
                 }
-                Text(text = " ")
-                Text(text = "HEADLINES")
-                Text(text = " ")
-                Text(text = "ACROSS")
-                Text(text = " ")
-                Text(text = "THE")
-                Text(text = " ")
-                Button(onClick = onRequestSelectCountry) {
-                    Text(text = newsSelection.country.name)
+                HeadlineTitleText(text = " ")
+                HeadlineTitleText(text = stringResource(R.string.headlines))
+                HeadlineTitleText(text = " ")
+                HeadlineTitleText(text = stringResource(id = R.string.across))
+                HeadlineTitleText(text = " ")
+                HeadlineTitleText(text = stringResource(id = R.string.the))
+                HeadlineTitleText(text = " ")
+                Button(
+                    contentPadding = ButtonConstants.DefaultContentPadding.copy(
+                        start = 8.dp,
+                        end = 8.dp
+                    ),
+                    onClick = onRequestSelectCountry
+                ) {
+                    newsSelection.country.let {
+                        HeadlineTitleText(text = "${stringResource(id = it.res)} ${it.countryCode.toFlagEmoji()}")
+                    }
                 }
             }
         }
@@ -70,15 +89,19 @@ fun HeadlinesHeader(
             TextButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 8.dp),
+                    .padding(bottom = 8.dp),
                 onClick = onRequestSelectCategory
             ) {
-                Text(text = "Choose a category")
+                Text(text = stringResource(id = R.string.choose_category))
             }
         }
         Divider()
     }
 }
+
+@Composable
+fun HeadlineTitleText(text : String) =
+    Text(text = text, fontWeight = FontWeight.Bold)
 
 @Preview
 @Composable
