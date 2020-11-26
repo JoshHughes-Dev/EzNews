@@ -2,7 +2,7 @@
 
 # EzNews
 
-EzNews is an android app built using Jetpack Compose, Paging 3 and the NewsAPI.org.
+EzNews is an android app showing a simple news feed built using Jetpack Compose, Paging 3 and the NewsAPI.org.
 
 This is a personal project for me to try out the latest libraries for Jetpack Compose (Alpha-07) and Paging 3. This app isnt publically released on any app store.
 
