@@ -1,6 +1,6 @@
 ![eznews_logo](art/eznews_logo_light.png) 
 
-![eznews_logo](art/eznews_logo_dark.png)
+![eznews_demo](art/eznews_demo.gif)
 
 # EzNews
 
@@ -44,9 +44,14 @@ NEWS_ORG_API_KEY={key}
 # Features
 
 - Paged data with states for loading / error / next page loading / next page error.
-- Filter controlls for news categories and for country.
+- Filter controls for news categories and for country.
 - Light/Dark Compose theming and custom typography.
 
+## Filters
+
+![eznews_demo_filters](art/eznews_demo_filters.gif)
+
+## Dark theme
 
 ![eznews_demo_dark_theme](art/eznews_demo_dark_theme.gif)
 
