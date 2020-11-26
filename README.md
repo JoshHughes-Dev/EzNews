@@ -48,5 +48,6 @@ NEWS_ORG_API_KEY={key}
 - Light/Dark Compose theming and custom typography.
 
 
+![eznews_demo_dark_theme](art/eznews_demo_dark_theme.gif)
 
 
