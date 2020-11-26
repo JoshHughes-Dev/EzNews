@@ -1,4 +1,6 @@
+![eznews_logo](art/eznews_logo_light.png) 
 
+![eznews_logo](art/eznews_logo_dark.png)
 
 # EzNews
 
