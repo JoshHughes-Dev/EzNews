@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,7 @@ fun ArticleItem(
     article: Article,
     onClick: (Article) -> Unit = {},
 ) {
-    val context = ContextAmbient.current
+    val context = AmbientContext.current
     Card(
         elevation = 6.dp,
         shape = RoundedCornerShape(8.dp),

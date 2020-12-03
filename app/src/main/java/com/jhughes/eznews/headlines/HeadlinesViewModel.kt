@@ -25,6 +25,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
 
     val newsSelection : StateFlow<HeadlinesPagingKey> = _newsSelection
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val topHeadlines: Flow<PagingData<Article>> = flowOf(
         _newsSelection.flatMapLatest { newsRepository.topNewsHeadlines(it) }
     ).flattenMerge()

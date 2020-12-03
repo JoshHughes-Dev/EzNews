@@ -6,7 +6,7 @@ import com.jhughes.eznews.common.data.ArticleParcel
 import com.jhughes.eznews.common.data.toParcel
 import com.jhughes.eznews.common.utils.Navigator
 import com.jhughes.eznews.domain.model.Article
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Models the screens in the app and any arguments they require.

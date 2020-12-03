@@ -3,7 +3,7 @@ package com.jhughes.eznews.common.data
 import android.os.Parcelable
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Source
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize

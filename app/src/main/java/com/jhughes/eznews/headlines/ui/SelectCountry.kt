@@ -20,7 +20,7 @@ import com.jhughes.eznews.R
 
 @Composable
 fun SelectCountry(modifier: Modifier = Modifier, onSelectCountry: (Country) -> Unit = {}) {
-    Column() {
+    Column(modifier = modifier.padding(bottom = 8.dp)) {
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -33,11 +33,12 @@ fun SelectCountry(modifier: Modifier = Modifier, onSelectCountry: (Country) -> U
             items = Country.usableSubSet().toList(),
             rowSize = 3
         ) { country ->
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .preferredHeight(74.dp)
-                .clickable(onClick = { onSelectCountry(country) })
-                .padding(8.dp),
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .preferredHeight(74.dp)
+                    .clickable(onClick = { onSelectCountry(country) })
+                    .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = country.countryCode.toFlagEmoji())

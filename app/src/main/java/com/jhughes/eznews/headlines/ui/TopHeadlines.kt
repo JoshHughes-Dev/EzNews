@@ -22,8 +22,9 @@ import com.jhughes.eznews.headlines.data.HeadlinesModalController
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsHeight
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
 
@@ -77,7 +78,7 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
     }
 }
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HeadlinesModalBottomSheetLayout(
     viewModel: HeadlinesViewModel,
