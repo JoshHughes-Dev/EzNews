@@ -1,13 +1,13 @@
 object Libs {
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha16"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-beta01"
 
     const val junit = "junit:junit:4.13"
 
     const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     object Kotlin {
-        const val version = "1.4.10"
+        const val version = "1.4.20"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -30,7 +30,7 @@ object Libs {
         const val material = "com.google.android.material:material:1.2.1"
 
         object Compose {
-            const val version = "1.0.0-alpha07"
+            const val version = "1.0.0-alpha08"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
             const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -43,6 +43,11 @@ object Libs {
             const val animation = "androidx.compose.animation:animation:$version"
             const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val test = "androidx.compose.test:test-core:$version"
+
+            object UI {
+                const val tooling = "androidx.ui:ui-tooling:1.0.0-alpha07"
+                const val uiTest = "androidx.ui:ui-test:1.0.0-alpha07"
+            }
         }
 
         object Lifecycle {
@@ -56,11 +61,6 @@ object Libs {
             const val compose = "androidx.paging:paging-compose:1.0.0-alpha02"
             //without Android dependencies for use tests
             const val common = "androidx.paging:paging-common:$version"
-        }
-
-        object UI {
-            const val tooling = "androidx.ui:ui-tooling:${Compose.version}"
-            const val uiTest = "androidx.ui:ui-test:${Compose.version}"
         }
 
         object Test {
@@ -95,7 +95,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.3.3.1"
+        private const val version = "0.4.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }

@@ -7,7 +7,7 @@ EzNews is an android app showing a simple news feed built using Jetpack Compose,
 
 ![eznews_demo](art/eznews_demo.gif)
 
-This is a personal project for me to try out the latest libraries for Jetpack Compose (Alpha-07) and Paging 3. This app isnt publically released on any app store.
+This is a personal project for me to try out the latest libraries for Jetpack Compose (Alpha-08) and Paging 3. This app isn't publicly released on any app store.
 
 - 100% Kotlin
 - MVVM architecture
@@ -45,8 +45,11 @@ NEWS_ORG_API_KEY={key}
 # Features
 
 - Paged data with states for loading / error / next page loading / next page error.
+- Lazy list and image loading.
+- "Jump to top" button control.
 - Filter controls for news categories and for country.
 - Light/Dark Compose theming and custom typography.
+- Simple navigation between the "news feed" screen and a "about" screen
 
 ## Filters
 

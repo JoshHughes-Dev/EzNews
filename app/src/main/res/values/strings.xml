@@ -9,13 +9,13 @@
 
 
     <string name="retry">Retry</string>
-    <string name="loading_error">Cant load the latest news. Check your internet.</string>
-    <string name="page_loading">Loading more...</string>
+    <string name="loading_error">Can\'t load the latest news. Check your internet.</string>
+    <string name="page_loading">Loading more&#8230;</string>
     <string name="page_loading_error">Try again</string>
 
     <string name="settings">Settings</string>
     <string name="about_title">About</string>
-    <string name="about_content">todo....</string>
+    <string name="about_content">EzNews is an android app showing a simple news feed built using Jetpack Compose, Paging 3 and the NewsAPI.org.\n\nThis is a personal project for me to try out the latest libraries for Jetpack Compose (Alpha-08) and Paging 3. This app isn\'t publicly released on any app store.</string>
 
     <string name="select_category">Select a news category</string>
     <string name="all">All news</string>

@@ -63,7 +63,7 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
                     .preferredSize(48.dp),
                 onClick = actions.showSettings
             ) {
-                Icon(asset = Icons.Outlined.Settings)
+                Icon(imageVector = Icons.Outlined.Settings)
             }
             //status bar scrim
             Spacer(

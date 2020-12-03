@@ -33,10 +33,10 @@ fun HeadlinesHeader(
         Box(
             modifier = Modifier.fillMaxWidth().preferredHeight(56.dp)
                 .padding(top = 8.dp),
-            alignment = Alignment.Center
+            contentAlignment = Alignment.Center
         ) {
             Image(
-                asset = vectorResource(
+                imageVector = vectorResource(
                     if (!isSystemInDarkTheme()) {
                         R.drawable.ic_eznews_logo_light
                     } else {

@@ -29,7 +29,7 @@ fun ArticleDetails(article : Article, closeDetails : () -> Unit = {}) {
             modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
                 IconButton(onClick = closeDetails) {
-                    Icon(asset = Icons.Default.Close)
+                    Icon(imageVector = Icons.Default.Close)
                 }
             }
         )

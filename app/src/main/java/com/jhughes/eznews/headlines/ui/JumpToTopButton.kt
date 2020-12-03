@@ -51,7 +51,7 @@ fun JumpToTopButton(
         ExtendedFloatingActionButton(
             icon = {
                 Icon(
-                    asset = Icons.Filled.ArrowUpward,
+                    imageVector = Icons.Filled.ArrowUpward,
                     modifier = Modifier.preferredHeight(18.dp)
                 )
             },

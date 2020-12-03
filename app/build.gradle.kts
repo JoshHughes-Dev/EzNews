@@ -66,12 +66,12 @@ dependencies {
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.layout)
     implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.UI.tooling)
     implementation(Libs.AndroidX.Compose.material)
     implementation(Libs.AndroidX.Compose.animation)
     implementation(Libs.AndroidX.Compose.materialIconsExtended)
     implementation(Libs.AndroidX.Compose.runtimeLivedata)
     implementation(Libs.AndroidX.Lifecycle.viewModelKtx)
-    implementation(Libs.AndroidX.UI.tooling)
     implementation(Libs.AndroidX.Paging.runtime)
     implementation(Libs.AndroidX.Paging.compose)
 

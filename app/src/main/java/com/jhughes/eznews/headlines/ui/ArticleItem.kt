@@ -64,7 +64,7 @@ fun ArticleItem(
                         Box(Modifier.fillMaxWidth()) {
                             Image(
                                 modifier = Modifier.preferredSize(24.dp).align(Alignment.Center),
-                                asset = Icons.Outlined.Image,
+                                imageVector = Icons.Outlined.Image,
                                 colorFilter = ColorFilter.tint(contentColorFor(color = Color.Gray))
                             )
                         }
@@ -73,7 +73,7 @@ fun ArticleItem(
                         Box(Modifier.fillMaxWidth()) {
                             Image(
                                 modifier = Modifier.preferredSize(24.dp).align(Alignment.Center),
-                                asset = Icons.Outlined.Error,
+                                imageVector = Icons.Outlined.Error,
                                 colorFilter = ColorFilter.tint(MaterialTheme.colors.error)
                             )
                         }
@@ -120,7 +120,7 @@ fun ArticleItem(
                         onClick = { shareArticle(article, context) }
                     ) {
                         Icon(
-                            asset = Icons.Outlined.Share,
+                            imageVector = Icons.Outlined.Share,
                             modifier = Modifier.preferredSize(20.dp)
                         )
                     }

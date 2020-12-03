@@ -19,7 +19,7 @@ import dev.chrisbanes.accompanist.insets.statusBarsPadding
 
 
 @Composable
-fun SettingsLayout(closeSettings : () -> Unit) {
+fun SettingsLayout(closeSettings: () -> Unit) {
     with(SysUiController.current) {
         setStatusBarColor(MaterialTheme.colors.primarySurface)
         setNavigationBarColor(Color.Transparent)
@@ -31,13 +31,17 @@ fun SettingsLayout(closeSettings : () -> Unit) {
             modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
                 IconButton(onClick = closeSettings) {
-                    Icon(asset = Icons.Default.ArrowBack)
+                    Icon(imageVector = Icons.Default.ArrowBack)
                 }
             }
         )
     }) {
         Column(Modifier.navigationBarsPadding().padding(20.dp)) {
-            Text(text = stringResource(id = R.string.about_title), style = MaterialTheme.typography.h6)
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = stringResource(id = R.string.about_title),
+                style = MaterialTheme.typography.h6
+            )
             Text(text = stringResource(id = R.string.about_content))
         }
     }

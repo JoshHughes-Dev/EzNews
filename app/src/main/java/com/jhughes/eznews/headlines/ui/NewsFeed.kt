@@ -8,6 +8,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,6 +27,7 @@ import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.add
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
+import kotlinx.coroutines.launch
 
 @Composable
 fun NewsFeed(
@@ -37,6 +40,8 @@ fun NewsFeed(
         headlinesViewModel.topHeadlines.collectAsLazyPagingItems()
 
     val feedListState = rememberLazyListState()
+
+    val coroutineScope = rememberCoroutineScope()
 
     Box(modifier = modifier) {
         LazyColumn(
@@ -85,7 +90,9 @@ fun NewsFeed(
             // Only show if the scroller is not at the top
             enabled = jumpToTopButtonEnabled,
             onClicked = {
-                //todo no way to scrollTo on the lazy lists currently. its internal.
+                coroutineScope.launch {
+                    feedListState.snapToItemIndex(0)
+                }
             },
             modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
         )
@@ -119,7 +126,7 @@ fun NewsFeedItem(index: Int, item: Article?, onItemSelected: (Article) -> Unit) 
 fun NewsFeedLoading() {
     Box(
         modifier = Modifier.fillMaxWidth().height(100.dp),
-        alignment = Alignment.Center,
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }
@@ -146,7 +153,7 @@ fun NewsFeedError(error: Throwable, onRetry: () -> Unit = {}) {
 fun NewsFeedPageLoading() {
     Box(
         modifier = Modifier.fillMaxWidth().height(100.dp),
-        alignment = Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Text(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 4.dp),
