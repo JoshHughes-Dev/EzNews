@@ -1,6 +1,6 @@
 object Libs {
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-beta01"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha03"
 
     const val junit = "junit:junit:4.13"
 
