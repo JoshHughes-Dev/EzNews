@@ -1,5 +1,6 @@
 package com.jhughes.eznews.headlines.ui
 
+import androidx.compose.foundation.animation.smoothScrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -40,7 +41,6 @@ fun NewsFeed(
         headlinesViewModel.topHeadlines.collectAsLazyPagingItems()
 
     val feedListState = rememberLazyListState()
-
     val coroutineScope = rememberCoroutineScope()
 
     Box(modifier = modifier) {

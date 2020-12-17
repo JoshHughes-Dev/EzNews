@@ -59,7 +59,7 @@ fun HeadlinesHeader(
                 if (newsSelection.category != NewsCategory.ALL) {
                     HeadlineTitleText(text = " ")
                     Button(
-                        contentPadding = ButtonConstants.DefaultContentPadding.copy(
+                        contentPadding = ButtonDefaults.ContentPadding.copy(
                             start = 8.dp,
                             end = 8.dp
                         ), onClick = onRequestSelectCategory
@@ -81,7 +81,7 @@ fun HeadlinesHeader(
                     HeadlineTitleText(text = " ")
                 }
                 Button(
-                    contentPadding = ButtonConstants.DefaultContentPadding.copy(
+                    contentPadding = ButtonDefaults.ContentPadding.copy(
                         start = 8.dp,
                         end = 8.dp
                     ),

@@ -141,7 +141,7 @@ fun HeadlinesFilterModalBottomSheetLayout(
     sheetContent = {
         Box(modifier = Modifier.statusBarsPadding()) {
             Surface(
-                elevation = ModalBottomSheetConstants.DefaultElevation,
+                elevation = ModalBottomSheetDefaults.Elevation,
             ) {
                 sheetContent()
             }

@@ -7,7 +7,7 @@ object Libs {
     const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     object Kotlin {
-        const val version = "1.4.20"
+        const val version = "1.4.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
@@ -29,7 +29,7 @@ object Libs {
         const val material = "com.google.android.material:material:1.2.1"
 
         object Compose {
-            const val version = "1.0.0-alpha08"
+            const val version = "1.0.0-alpha09"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
             const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -94,7 +94,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.4.0"
+        private const val version = "0.4.1"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
