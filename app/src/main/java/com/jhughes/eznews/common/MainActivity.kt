@@ -1,12 +1,10 @@
 package com.jhughes.eznews.common
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.ui.platform.setContent
 import androidx.core.view.WindowCompat
 import com.jhughes.eznews.articledetails.ui.ArticleDetails
 import com.jhughes.eznews.common.data.toDomain

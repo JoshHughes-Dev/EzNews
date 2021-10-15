@@ -5,9 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.onCommit
 import androidx.compose.ui.graphics.Color
-import com.jhughes.eznews.common.utils.SysUiController
 
 private val DarkColorPalette = darkColors(
     primary = Blue200,

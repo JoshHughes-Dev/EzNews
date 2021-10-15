@@ -2,10 +2,8 @@ package com.jhughes.eznews.common.utils
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.onCommit
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.runtime.*
+
 
 /**
  * An effect for handling presses of the device back button.
@@ -13,22 +11,26 @@ import androidx.compose.runtime.staticAmbientOf
 @Composable
 fun backHandler(
     enabled: Boolean = true,
-    onBack: () -> Unit
+    onBackPressed: () -> Unit
 ) {
-    val backCallback = remember(onBack) {
+    // Safely update the current `onBack` lambda when a new one is provided
+    val currentOnBackPressed by rememberUpdatedState(onBackPressed)
+
+    // Remember in Composition a back callback that calls the `onBackPressed` lambda
+    val backCallback = remember {
         object : OnBackPressedCallback(enabled) {
             override fun handleOnBackPressed() {
-                onBack()
+                currentOnBackPressed()
             }
         }
     }
-    onCommit(enabled) {
-        backCallback.isEnabled = enabled
-    }
 
-    val dispatcher = AmbientBackDispatcher.current
-    onCommit(backCallback) {
-        dispatcher.addCallback(backCallback)
+    val backDispatcher = LocalBackPressedDispatcher.current
+
+    // Whenever there's a new dispatcher set up the callback
+    DisposableEffect(backDispatcher) {
+        backDispatcher.addCallback(backCallback)
+        // When the effect leaves the Composition, or there's a new dispatcher, remove the callback
         onDispose {
             backCallback.remove()
         }
@@ -36,9 +38,15 @@ fun backHandler(
 }
 
 /**
- * An [androidx.compose.runtime.Ambient] providing the current [OnBackPressedDispatcher]. You must
- * [provide][androidx.compose.runtime.Providers] a value before use.
+ * This [CompositionLocal] is used to provide an [OnBackPressedDispatcher]:
+ *
+ * ```
+ * CompositionLocalProvider(
+ *     LocalBackPressedDispatcher provides requireActivity().onBackPressedDispatcher
+ * ) { }
+ * ```
+ *
+ * and setting up the callbacks with [BackPressHandler].
  */
-internal val AmbientBackDispatcher = staticAmbientOf<OnBackPressedDispatcher> {
-    error("No Back Dispatcher provided")
-}
+val LocalBackPressedDispatcher =
+    staticCompositionLocalOf<OnBackPressedDispatcher> { error("No Back Dispatcher provided") }

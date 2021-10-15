@@ -3,7 +3,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -17,7 +17,6 @@ subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {

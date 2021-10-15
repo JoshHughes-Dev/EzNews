@@ -16,7 +16,8 @@
         <activity
             android:name=".common.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.EzNews">
+            android:theme="@style/Theme.EzNews"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
