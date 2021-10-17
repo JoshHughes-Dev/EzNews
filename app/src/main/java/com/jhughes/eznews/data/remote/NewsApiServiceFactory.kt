@@ -4,6 +4,7 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jhughes.eznews.BuildConfig
 import com.jhughes.eznews.data.MoshiFactory
+import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -13,7 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object NewsApiServiceFactory {
 
-    fun create(context : Context): NewsApiService {
+    fun create(context : Context, moshi: Moshi): NewsApiService {
 
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
@@ -26,7 +27,7 @@ object NewsApiServiceFactory {
         val restAdapter = Retrofit.Builder()
             .client(httpClient)
             .baseUrl("https://newsapi.org")
-            .addConverterFactory(MoshiConverterFactory.create(MoshiFactory.create()))
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
         return restAdapter.create(NewsApiService::class.java)

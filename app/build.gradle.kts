@@ -59,6 +59,7 @@ dependencies {
     implementation(Libs.AndroidX.activityKtx)
     implementation(Libs.AndroidX.activityCompose)
     implementation(Libs.AndroidX.fragmentKtx)
+    implementation(Libs.AndroidX.hiltNavigationCompose)
     implementation(Libs.AndroidX.material)
     implementation(Libs.AndroidX.Compose.compiler)
     implementation(Libs.AndroidX.Compose.runtime)

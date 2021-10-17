@@ -44,8 +44,7 @@ fun ArticleItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = {
-                openArticle(article, context)
-                //onClick(article)
+                onClick(article)
             })
     ) {
         Column() {
@@ -158,11 +157,6 @@ private fun shareArticle(article: Article, context: Context) {
         putExtra(Intent.EXTRA_TEXT, article.url)
     }
     context.startActivity(Intent.createChooser(intent, "Share Article"))
-}
-
-private fun openArticle(article: Article, context: Context) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
-    context.startActivity(intent)
 }
 
 private fun formatTimeSincePublished(date: Date): String {

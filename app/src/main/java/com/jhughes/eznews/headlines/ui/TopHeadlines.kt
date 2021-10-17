@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
-import com.jhughes.eznews.common.Actions
+import com.jhughes.eznews.common.EzNewsNavigationActions
 import com.jhughes.eznews.common.theme.SystemBarOpaque
 import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.common.utils.backHandler
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
+fun TopHeadlines(viewModel: HeadlinesViewModel, navigationActions: EzNewsNavigationActions) {
 
     //we'll use a view to apply a scrim to status bar instead of coloring it directly.
     //This is so it still looks good when the bottom sheet modal scrim
@@ -54,7 +54,7 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
                             }
                         )
                     },
-                    onSelectArticle = actions.selectArticle
+                    onSelectArticle = navigationActions.navigateToArticleDetails
                 )
             }
             FloatingActionButton(
@@ -63,7 +63,7 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
                     .statusBarsPadding()
                     .padding(top = 8.dp, end = 16.dp)
                     .size(48.dp),
-                onClick = actions.showSettings
+                onClick = navigationActions.navigateToSettings
             ) {
                 Icon(imageVector = Icons.Outlined.Settings, contentDescription = "")
             }
