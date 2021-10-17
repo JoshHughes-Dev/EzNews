@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(31)
 
     defaultConfig {
         applicationId = "com.jhughes.eznews"
-        minSdkVersion(29)
-        targetSdkVersion(30)
+        minSdkVersion(31)
+        targetSdkVersion(31)
         versionCode = 1
         versionName = "1.0"
 
@@ -40,14 +40,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-        useIR = true
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
-        kotlinCompilerVersion = Libs.Kotlin.version
     }
 }
 
@@ -59,6 +57,7 @@ dependencies {
     implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.activityKtx)
+    implementation(Libs.AndroidX.activityCompose)
     implementation(Libs.AndroidX.fragmentKtx)
     implementation(Libs.AndroidX.material)
     implementation(Libs.AndroidX.Compose.compiler)
@@ -72,16 +71,23 @@ dependencies {
     implementation(Libs.AndroidX.Compose.materialIconsExtended)
     implementation(Libs.AndroidX.Compose.runtimeLivedata)
     implementation(Libs.AndroidX.Lifecycle.viewModelKtx)
+    implementation(Libs.AndroidX.Lifecycle.viewModelCompose)
     implementation(Libs.AndroidX.Paging.runtime)
     implementation(Libs.AndroidX.Paging.compose)
 
     implementation(Libs.Accompanist.insets)
-    implementation(Libs.Accompanist.coil)
+    implementation(Libs.Accompanist.systemUiController)
+    implementation(Libs.Accompanist.placeholder)
+    implementation(Libs.Accompanist.flowLayout)
+    implementation(Libs.Accompanist.swipeToRefresh)
+    implementation(Libs.Accompanist.navigatoinMaterial)
+
+    implementation(Libs.Coil.coilCompose)
 
     implementation(Libs.Hilt.android)
     kapt(Libs.Hilt.compiler)
-    implementation(Libs.Hilt.AndroidX.viewModel)
-    kapt(Libs.Hilt.AndroidX.compiler)
+//    implementation(Libs.Hilt.AndroidX.viewModel)
+//    kapt(Libs.Hilt.AndroidX.compiler)
 
     implementation(Libs.Moshi.moshi)
     implementation(Libs.Moshi.kotlin)

@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Share
@@ -21,15 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientContext
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Source
-import dev.chrisbanes.accompanist.coil.CoilImage
 import java.util.*
 import kotlin.math.abs
 
@@ -39,11 +37,12 @@ fun ArticleItem(
     article: Article,
     onClick: (Article) -> Unit = {},
 ) {
-    val context = AmbientContext.current
+    val context = LocalContext.current
     Card(
         elevation = 6.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .clickable(onClick = {
                 openArticle(article, context)
                 //onClick(article)
@@ -56,30 +55,45 @@ fun ArticleItem(
                 Color.DarkGray
             }
             Surface(color = imageBackground) {
-                CoilImage(
-                    modifier = Modifier.aspectRatio(1.80f),
+
+                val painter = rememberImagePainter(
                     data = article.urlToImage ?: "",
-                    contentScale = ContentScale.Crop,
-                    fadeIn = true,
-                    loading = {
+                    builder = {
+                        crossfade(true)
+                    }
+                )
+                Image(
+                    painter = painter,
+                    contentDescription = "",
+                    modifier = Modifier.aspectRatio(1.80f),
+                )
+
+                when (painter.state) {
+                    is ImagePainter.State.Loading -> {
                         Box(Modifier.fillMaxWidth()) {
                             Image(
-                                modifier = Modifier.preferredSize(24.dp).align(Alignment.Center),
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .align(Alignment.Center),
                                 imageVector = Icons.Outlined.Image,
-                                colorFilter = ColorFilter.tint(contentColorFor(color = Color.Gray))
-                            )
-                        }
-                    },
-                    error = {
-                        Box(Modifier.fillMaxWidth()) {
-                            Image(
-                                modifier = Modifier.preferredSize(24.dp).align(Alignment.Center),
-                                imageVector = Icons.Outlined.Error,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colors.error)
+                                colorFilter = ColorFilter.tint(contentColorFor(backgroundColor = Color.Gray)),
+                                contentDescription = ""
                             )
                         }
                     }
-                )
+                    is ImagePainter.State.Error -> {
+                        Box(Modifier.fillMaxWidth()) {
+                            Image(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .align(Alignment.Center),
+                                imageVector = Icons.Outlined.Error,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colors.error),
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                }
             }
             Column(modifier = Modifier) {
                 Text(
@@ -101,7 +115,8 @@ fun ArticleItem(
                     )
                 }
                 Row(
-                    modifier = Modifier.wrapContentHeight()
+                    modifier = Modifier
+                        .wrapContentHeight()
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 2.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -122,7 +137,8 @@ fun ArticleItem(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Share,
-                            modifier = Modifier.preferredSize(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            contentDescription = ""
                         )
                     }
                 }

@@ -1,6 +1,7 @@
 package com.jhughes.eznews.data
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.jhughes.eznews.data.remote.NewsApiService
 import com.jhughes.eznews.data.remote.model.toQueryParamValue
 import com.jhughes.eznews.data.remote.model.toDomain
@@ -44,4 +45,13 @@ class PageKeyedHeadlinesPagingSource(
             null
         }
     }
+
+    override fun getRefreshKey(state: PagingState<HeadlinesPagingKey, Article>): HeadlinesPagingKey? {
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.run { copy(page = page.plus(1)) }
+                ?: anchorPage?.nextKey?.run { copy(page = page.minus(1)) }
+        }
+    }
 }
+

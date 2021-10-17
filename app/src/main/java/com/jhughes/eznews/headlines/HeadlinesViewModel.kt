@@ -1,7 +1,5 @@
 package com.jhughes.eznews.headlines
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
@@ -10,13 +8,16 @@ import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.repository.NewsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class HeadlinesViewModel @ViewModelInject constructor(
-    private val newsRepository: NewsRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+@HiltViewModel
+class HeadlinesViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val newsRepository: NewsRepository
 ) : ViewModel() {
 
     private val _newsSelection : MutableStateFlow<HeadlinesPagingKey> = MutableStateFlow(

@@ -13,8 +13,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun WebComponent(urlToRender: String) {
 
     val forceDark = isSystemInDarkTheme()
-    AndroidView(viewBlock = ::WebView) { webView ->
-        with(webView) {
+    AndroidView(factory = {
+        WebView(it).apply {
             settings.javaScriptEnabled = true
             settings.forceDark = if (forceDark) {
                 WebSettings.FORCE_DARK_ON
@@ -24,5 +24,5 @@ fun WebComponent(urlToRender: String) {
             webViewClient = WebViewClient()
             loadUrl(urlToRender)
         }
-    }
+    })
 }

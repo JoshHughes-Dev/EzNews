@@ -6,13 +6,13 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.insets.statusBarsPadding
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.ui.WebComponent
 import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Source
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import java.util.*
 
 @Composable
@@ -29,7 +29,7 @@ fun ArticleDetails(article : Article, closeDetails : () -> Unit = {}) {
             modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
                 IconButton(onClick = closeDetails) {
-                    Icon(imageVector = Icons.Default.Close)
+                    Icon(imageVector = Icons.Default.Close, contentDescription = "")
                 }
             }
         )

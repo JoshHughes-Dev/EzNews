@@ -12,6 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsHeight
+import com.google.accompanist.insets.statusBarsPadding
 import com.jhughes.eznews.common.Actions
 import com.jhughes.eznews.common.theme.SystemBarOpaque
 import com.jhughes.eznews.common.utils.SysUiController
@@ -19,10 +22,8 @@ import com.jhughes.eznews.common.utils.backHandler
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.headlines.HeadlinesViewModel
 import com.jhughes.eznews.headlines.data.HeadlinesModalController
-import dev.chrisbanes.accompanist.insets.navigationBarsPadding
-import dev.chrisbanes.accompanist.insets.statusBarsHeight
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -61,10 +62,10 @@ fun TopHeadlines(viewModel: HeadlinesViewModel, actions: Actions) {
                     .align(Alignment.TopEnd)
                     .statusBarsPadding()
                     .padding(top = 8.dp, end = 16.dp)
-                    .preferredSize(48.dp),
+                    .size(48.dp),
                 onClick = actions.showSettings
             ) {
-                Icon(imageVector = Icons.Outlined.Settings)
+                Icon(imageVector = Icons.Outlined.Settings, contentDescription = "")
             }
             //status bar scrim
             Spacer(
@@ -85,17 +86,18 @@ fun HeadlinesModalBottomSheetLayout(
     mainContent: @Composable (controller: HeadlinesModalController) -> Unit
 ) {
     //nesting two bottom sheet modal because changing the sheet content dynamically causes issues
+    val coroutineScope = rememberCoroutineScope()
 
     val categoryFilterSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val countryFilterSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
     backHandler(
-        enabled = categoryFilterSheetState.value != ModalBottomSheetValue.Hidden,
-        onBack = { categoryFilterSheetState.hide() }
+        enabled = categoryFilterSheetState.currentValue != ModalBottomSheetValue.Hidden,
+        onBackPressed = { coroutineScope.launch { categoryFilterSheetState.hide() } }
     )
     backHandler(
-        enabled = countryFilterSheetState.value != ModalBottomSheetValue.Hidden,
-        onBack = { countryFilterSheetState.hide() }
+        enabled = countryFilterSheetState.currentValue != ModalBottomSheetValue.Hidden,
+        onBackPressed = { coroutineScope.launch { countryFilterSheetState.hide() } }
     )
 
     HeadlinesFilterModalBottomSheetLayout(
@@ -103,7 +105,7 @@ fun HeadlinesModalBottomSheetLayout(
         sheetContent = {
             SelectCategory(modifier = Modifier.navigationBarsPadding()) { category ->
                 viewModel.setNewsCategory(category)
-                categoryFilterSheetState.hide()
+                coroutineScope.launch { categoryFilterSheetState.hide() }
             }
         }
     ) {
@@ -112,12 +114,13 @@ fun HeadlinesModalBottomSheetLayout(
             sheetContent = {
                 SelectCountry(modifier = Modifier.navigationBarsPadding()) { country ->
                     viewModel.setCountry(country)
-                    countryFilterSheetState.hide()
+                    coroutineScope.launch { countryFilterSheetState.hide() }
                 }
             },
             content = {
                 mainContent(
                     HeadlinesModalController(
+                        coroutineScope,
                         categoryFilterSheetState,
                         countryFilterSheetState
                     )
@@ -136,7 +139,7 @@ fun HeadlinesFilterModalBottomSheetLayout(
 ) = ModalBottomSheetLayout(
     sheetState = sheetState,
     sheetBackgroundColor = Color.Transparent,
-    sheetContentColor = contentColorFor(color = MaterialTheme.colors.surface),
+    sheetContentColor = contentColorFor(backgroundColor = MaterialTheme.colors.surface),
     sheetElevation = 0.dp,
     sheetContent = {
         Box(modifier = Modifier.statusBarsPadding()) {

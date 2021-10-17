@@ -9,14 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.R
-import dev.chrisbanes.accompanist.insets.navigationBarsPadding
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
-
 
 @Composable
 fun SettingsLayout(closeSettings: () -> Unit) {
@@ -31,7 +30,7 @@ fun SettingsLayout(closeSettings: () -> Unit) {
             modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
                 IconButton(onClick = closeSettings) {
-                    Icon(imageVector = Icons.Default.ArrowBack)
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
                 }
             }
         )

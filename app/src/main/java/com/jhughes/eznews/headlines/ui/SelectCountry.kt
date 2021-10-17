@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.ui.LazyGridFor
 import com.jhughes.eznews.common.utils.toFlagEmoji
@@ -36,7 +36,7 @@ fun SelectCountry(modifier: Modifier = Modifier, onSelectCountry: (Country) -> U
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .preferredHeight(74.dp)
+                    .height(74.dp)
                     .clickable(onClick = { onSelectCountry(country) })
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally

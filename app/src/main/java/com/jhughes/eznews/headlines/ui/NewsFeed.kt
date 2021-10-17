@@ -1,6 +1,5 @@
 package com.jhughes.eznews.headlines.ui
 
-import androidx.compose.foundation.animation.smoothScrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -9,25 +8,23 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
-import androidx.ui.tooling.preview.Preview
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.headlines.HeadlinesViewModel
 import com.jhughes.eznews.R
-import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
-import dev.chrisbanes.accompanist.insets.add
-import dev.chrisbanes.accompanist.insets.navigationBarsPadding
-import dev.chrisbanes.accompanist.insets.toPaddingValues
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,9 +43,10 @@ fun NewsFeed(
     Box(modifier = modifier) {
         LazyColumn(
             state = feedListState,
-            contentPadding = AmbientWindowInsets.current.systemBars
-                .toPaddingValues()
-                .add(bottom = 68.dp)
+            contentPadding = rememberInsetsPaddingValues(
+                insets = LocalWindowInsets.current.systemBars,
+                additionalBottom = 68.dp
+            )
         ) {
             item { headerItem() }
 
@@ -91,10 +89,12 @@ fun NewsFeed(
             enabled = jumpToTopButtonEnabled,
             onClicked = {
                 coroutineScope.launch {
-                    feedListState.snapToItemIndex(0)
+                    feedListState.animateScrollToItem(0)
                 }
             },
-            modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding()
         )
     }
 }
@@ -125,7 +125,9 @@ fun NewsFeedItem(index: Int, item: Article?, onItemSelected: (Article) -> Unit) 
 @Composable
 fun NewsFeedLoading() {
     Box(
-        modifier = Modifier.fillMaxWidth().height(100.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp),
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
@@ -135,7 +137,9 @@ fun NewsFeedLoading() {
 @Composable
 fun NewsFeedError(error: Throwable, onRetry: () -> Unit = {}) {
     Column(
-        modifier = Modifier.fillMaxWidth().height(100.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -152,7 +156,9 @@ fun NewsFeedError(error: Throwable, onRetry: () -> Unit = {}) {
 @Composable
 fun NewsFeedPageLoading() {
     Box(
-        modifier = Modifier.fillMaxWidth().height(100.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -165,7 +171,9 @@ fun NewsFeedPageLoading() {
 @Composable
 fun NewsFeedPageError(error: Throwable, onRetry: () -> Unit = {}) {
     Column(
-        modifier = Modifier.fillMaxWidth().height(100.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

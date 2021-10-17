@@ -7,12 +7,16 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.ui.tooling.preview.Preview
+import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
@@ -21,7 +25,6 @@ import com.jhughes.eznews.R
 import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.emoji
 
-@OptIn(ExperimentalLayout::class)
 @Composable
 fun HeadlinesHeader(
     modifier: Modifier = Modifier,
@@ -31,18 +34,19 @@ fun HeadlinesHeader(
 ) {
     Column(modifier) {
         Box(
-            modifier = Modifier.fillMaxWidth().preferredHeight(56.dp)
+            modifier = Modifier.fillMaxWidth().height(56.dp)
                 .padding(top = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             Image(
-                imageVector = vectorResource(
+                painter = painterResource(
                     if (!isSystemInDarkTheme()) {
                         R.drawable.ic_eznews_logo_light
                     } else {
                         R.drawable.ic_eznews_logo_dark
                     }
-                )
+                ),
+                contentDescription = ""
             )
         }
         Box(
@@ -59,13 +63,11 @@ fun HeadlinesHeader(
                 if (newsSelection.category != NewsCategory.ALL) {
                     HeadlineTitleText(text = " ")
                     Button(
-                        contentPadding = ButtonDefaults.ContentPadding.copy(
-                            start = 8.dp,
-                            end = 8.dp
-                        ), onClick = onRequestSelectCategory
+                        contentPadding = PaddingValues(24.dp, 8.dp),
+                        onClick = onRequestSelectCategory
                     ) {
                         HeadlineTitleText(
-                            text = "${stringResource(id = newsSelection.category.res).toUpperCase()} ${newsSelection.category.emoji()}" )
+                            text = "${stringResource(id = newsSelection.category.res).uppercase()} ${newsSelection.category.emoji()}" )
                     }
                 }
                 HeadlineTitleText(text = " ")
@@ -81,14 +83,11 @@ fun HeadlinesHeader(
                     HeadlineTitleText(text = " ")
                 }
                 Button(
-                    contentPadding = ButtonDefaults.ContentPadding.copy(
-                        start = 8.dp,
-                        end = 8.dp
-                    ),
+                    contentPadding = PaddingValues(24.dp, 8.dp),
                     onClick = onRequestSelectCountry
                 ) {
                     newsSelection.country.let {
-                        HeadlineTitleText(text = "${stringResource(id = it.res).toUpperCase()} ${it.countryCode.toFlagEmoji()}")
+                        HeadlineTitleText(text = "${stringResource(id = it.res).uppercase()} ${it.countryCode.toFlagEmoji()}")
                     }
                 }
             }
