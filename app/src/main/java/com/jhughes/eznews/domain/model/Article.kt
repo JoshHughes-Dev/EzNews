@@ -10,4 +10,8 @@ data class Article(
     val url: String?,
     val urlToImage: String?,
     val publishedAt: Date
-)
+) {
+    companion object {
+        fun empty() = Article(Source("", ""), "", "", "", "", "", Date())
+    }
+}

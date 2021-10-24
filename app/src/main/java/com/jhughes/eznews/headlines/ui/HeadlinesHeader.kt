@@ -28,7 +28,7 @@ import com.jhughes.eznews.domain.model.emoji
 @Composable
 fun HeadlinesHeader(
     modifier: Modifier = Modifier,
-    newsSelection: HeadlinesPagingKey,
+    newsSelection: HeadlinesPagingKey = HeadlinesPagingKey(),
     onRequestSelectCategory: () -> Unit = {},
     onRequestSelectCountry: () -> Unit = {}
 ) {

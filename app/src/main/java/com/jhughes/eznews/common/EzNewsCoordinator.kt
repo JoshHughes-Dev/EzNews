@@ -1,94 +1,119 @@
 package com.jhughes.eznews.common
 
-import android.net.Uri
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.core.os.bundleOf
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.navigation
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.bottomSheet
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.jhughes.eznews.articledetails.ui.ArticleDetails
-import com.jhughes.eznews.common.data.ArticleParcel
-import com.jhughes.eznews.common.data.toDomain
-import com.jhughes.eznews.common.data.toParcel
-import com.jhughes.eznews.common.utils.AssetParamType
-import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.headlines.HeadlinesViewModel
+import com.jhughes.eznews.headlines.ui.SelectCategory
+import com.jhughes.eznews.headlines.ui.SelectCountry
 import com.jhughes.eznews.headlines.ui.TopHeadlines
 import com.jhughes.eznews.settings.ui.SettingsLayout
-import com.squareup.moshi.Moshi
 
-object ExNewsDestinations {
-    const val TOP_HEADLINES: String = "top_headlines"
-    const val SETTINGS: String = "settings"
-    const val ARTICLE_DETAILS: String = "article_details"
+internal sealed class NavigationRoute(val route: String) {
+
+    object HomeGraph : NavigationRoute("home") {
+        object HeadlinesScreen : NavigationRoute("home.headlines")
+        object SelectCountryDialog : NavigationRoute("home.select_country")
+        object SelectCategoryDialog : NavigationRoute("home.select_category")
+        object ArticleDetails : NavigationRoute("home.details")
+    }
+
+    object SettingsScreen : NavigationRoute("settings")
 }
 
-/**
- * Models the navigation actions in the app.
- */
-class EzNewsNavigationActions(navController: NavHostController, val moshi : Moshi) {
-    val navigateToTopHeadlines: () -> Unit = {
-        navController.navigate(ExNewsDestinations.TOP_HEADLINES) {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
-            launchSingleTop = true
-            // Restore state when reselecting a previously selected item
-            restoreState = true
-        }
-    }
-    val navigateToSettings: () -> Unit = {
-        navController.navigate(ExNewsDestinations.SETTINGS) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    }
-    val navigateToArticleDetails: (Article) -> Unit = {
-        val json = Uri.encode(moshi.adapter(ArticleParcel::class.java).toJson(it.toParcel()))
-        val destination = ExNewsDestinations.ARTICLE_DETAILS + "/" + json
-        navController.navigate(destination)
-    }
-}
-
+@OptIn(
+    ExperimentalMaterialNavigationApi::class,
+    ExperimentalAnimationApi::class,
+)
 @Composable
-fun EzNewsCoordinator(
-    navController: NavHostController = rememberNavController(),
-    moshi : Moshi,
-) {
-    val navigationActions = remember(navController) {
-        EzNewsNavigationActions(navController, moshi)
-    }
+fun EzNewsCoordinator() {
 
-    NavHost(
-        navController = navController,
-        startDestination = ExNewsDestinations.TOP_HEADLINES
-    ) {
-        composable(ExNewsDestinations.TOP_HEADLINES) {
-            val headlinesViewModel = hiltViewModel<HeadlinesViewModel>()
-            TopHeadlines(viewModel = headlinesViewModel, navigationActions)
-        }
-        composable(ExNewsDestinations.SETTINGS) {
-            SettingsLayout(closeSettings = { navController.navigateUp() })
-        }
-        composable(
-            route = "${ExNewsDestinations.ARTICLE_DETAILS}/{article}",
-            arguments = listOf(navArgument("article") { type = AssetParamType(moshi) })
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val navController = rememberNavController(bottomSheetNavigator)
+
+    ModalBottomSheetLayout(bottomSheetNavigator) {
+        NavHost(
+            navController = navController,
+            startDestination = NavigationRoute.HomeGraph.route
         ) {
-            val article = it.arguments?.getParcelable<ArticleParcel>("article")!!.toDomain()
-            ArticleDetails(article = article) { navController.navigateUp() }
+            homeGraph(navController)
+
+            composable(NavigationRoute.SettingsScreen.route) {
+                SettingsLayout(closeSettings = { navController.popBackStack() })
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialNavigationApi::class)
+internal fun NavGraphBuilder.homeGraph(
+    navController: NavController
+) {
+
+    navigation(
+        startDestination = NavigationRoute.HomeGraph.HeadlinesScreen.route,
+        route = NavigationRoute.HomeGraph.route
+    ) {
+        composable(NavigationRoute.HomeGraph.HeadlinesScreen.route) {
+            val parentEntry =
+                remember { navController.getBackStackEntry(NavigationRoute.HomeGraph.route) }
+            val viewModel: HeadlinesViewModel = hiltViewModel(parentEntry)
+            TopHeadlines(
+                viewModel = viewModel,
+                onSelectCategory = { navController.navigate(NavigationRoute.HomeGraph.SelectCategoryDialog.route) },
+                onSelectCountry = { navController.navigate(NavigationRoute.HomeGraph.SelectCountryDialog.route) },
+                onArticleDetails = {
+                    viewModel.selectedArticle = it
+                    navController.navigate(NavigationRoute.HomeGraph.ArticleDetails.route)
+                },
+                onSettings = {
+                    navController.navigate(NavigationRoute.SettingsScreen.route)
+                }
+            )
+        }
+        bottomSheet(NavigationRoute.HomeGraph.SelectCategoryDialog.route) {
+            val parentEntry =
+                remember { navController.getBackStackEntry(NavigationRoute.HomeGraph.route) }
+            val viewModel: HeadlinesViewModel = hiltViewModel(parentEntry)
+            SelectCategory(modifier = Modifier.navigationBarsPadding()) { category ->
+                viewModel.setNewsCategory(category)
+                navController.popBackStack()
+            }
+        }
+        bottomSheet(NavigationRoute.HomeGraph.SelectCountryDialog.route) {
+            val parentEntry =
+                remember { navController.getBackStackEntry(NavigationRoute.HomeGraph.route) }
+            val viewModel: HeadlinesViewModel = hiltViewModel(parentEntry)
+            SelectCountry(modifier = Modifier.navigationBarsPadding()) { country ->
+                viewModel.setCountry(country)
+                navController.popBackStack()
+            }
+        }
+
+        composable(
+            route = NavigationRoute.HomeGraph.ArticleDetails.route
+        ) {
+            val parentEntry =
+                remember { navController.getBackStackEntry(NavigationRoute.HomeGraph.route) }
+            val viewModel: HeadlinesViewModel = hiltViewModel(parentEntry)
+
+            ArticleDetails(viewModel) {
+                navController.popBackStack()
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ object Libs {
         const val activityKtx = "androidx.activity:activity-ktx:1.3.1"
         const val activityCompose = "androidx.activity:activity-compose:1.3.1"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.3.6"
+        const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-alpha10"
         const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
 
         const val junit = "junit:junit:4.13"
@@ -57,7 +58,7 @@ object Libs {
         }
 
         object Paging {
-            private const val version = "3.1.0-alpha04"
+            private const val version = "3.1.0-beta01"
             const val runtime = "androidx.paging:paging-runtime:$version"
             const val compose = "androidx.paging:paging-compose:1.0.0-alpha13"
             //without Android dependencies for use tests
@@ -96,9 +97,8 @@ object Libs {
         const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"
         const val swipeToRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
-        const val navigatoinMaterial = "com.google.accompanist:accompanist-navigation-material:$version"
-
-
+        const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:$version"
+        const val navigationAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
     }
 
     object Moshi {

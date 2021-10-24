@@ -13,16 +13,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jhughes.eznews.common.theme.EzNewsTheme
-import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.R
 
 @Composable
 fun SettingsLayout(closeSettings: () -> Unit) {
-    with(SysUiController.current) {
-        setStatusBarColor(MaterialTheme.colors.primarySurface)
-        setNavigationBarColor(Color.Transparent)
-    }
+    val systemUiController = rememberSystemUiController()
+
+    systemUiController.setStatusBarColor(MaterialTheme.colors.primarySurface)
+    systemUiController.setNavigationBarColor(Color.Transparent)
 
     Scaffold(topBar = {
         TopAppBar(
@@ -35,7 +35,11 @@ fun SettingsLayout(closeSettings: () -> Unit) {
             }
         )
     }) {
-        Column(Modifier.navigationBarsPadding().padding(20.dp)) {
+        Column(
+            Modifier
+                .navigationBarsPadding()
+                .padding(20.dp)
+        ) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
                 text = stringResource(id = R.string.about_title),

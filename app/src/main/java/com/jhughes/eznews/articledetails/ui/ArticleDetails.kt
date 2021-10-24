@@ -6,22 +6,23 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.insets.statusBarsPadding
-import com.jhughes.eznews.common.theme.EzNewsTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jhughes.eznews.common.ui.WebComponent
-import com.jhughes.eznews.common.utils.SysUiController
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Source
+import com.jhughes.eznews.headlines.HeadlinesViewModel
 import java.util.*
 
 @Composable
-fun ArticleDetails(article : Article, closeDetails : () -> Unit = {}) {
+fun ArticleDetails(viewModel: HeadlinesViewModel, closeDetails : () -> Unit = {}) {
 
-    with(SysUiController.current) {
-        setStatusBarColor(MaterialTheme.colors.primarySurface)
-        setNavigationBarColor(Color.Transparent)
-    }
+    val systemUiController = rememberSystemUiController()
+
+    systemUiController.setStatusBarColor(MaterialTheme.colors.primarySurface)
+    systemUiController.setNavigationBarColor(Color.Transparent)
+
+    val article = viewModel.selectedArticle
 
     Scaffold(topBar = {
         TopAppBar(
@@ -48,10 +49,11 @@ private val dummyData = Article(
     publishedAt = Date(),
 )
 
-@Preview
-@Composable
-fun ArticleDetailsPreview() {
-    EzNewsTheme {
-        ArticleDetails(article = dummyData)
-    }
-}
+//todo
+//@Preview
+//@Composable
+//fun ArticleDetailsPreview() {
+//    EzNewsTheme {
+//        ArticleDetails(article = dummyData)
+//    }
+//}

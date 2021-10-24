@@ -59,6 +59,7 @@ dependencies {
     implementation(Libs.AndroidX.activityKtx)
     implementation(Libs.AndroidX.activityCompose)
     implementation(Libs.AndroidX.fragmentKtx)
+    implementation(Libs.AndroidX.navigationCompose)
     implementation(Libs.AndroidX.hiltNavigationCompose)
     implementation(Libs.AndroidX.material)
     implementation(Libs.AndroidX.Compose.compiler)
@@ -81,14 +82,13 @@ dependencies {
     implementation(Libs.Accompanist.placeholder)
     implementation(Libs.Accompanist.flowLayout)
     implementation(Libs.Accompanist.swipeToRefresh)
-    implementation(Libs.Accompanist.navigatoinMaterial)
+    implementation(Libs.Accompanist.navigationMaterial)
+    implementation(Libs.Accompanist.navigationAnimation)
 
     implementation(Libs.Coil.coilCompose)
 
     implementation(Libs.Hilt.android)
     kapt(Libs.Hilt.compiler)
-//    implementation(Libs.Hilt.AndroidX.viewModel)
-//    kapt(Libs.Hilt.AndroidX.compiler)
 
     implementation(Libs.Moshi.moshi)
     implementation(Libs.Moshi.kotlin)

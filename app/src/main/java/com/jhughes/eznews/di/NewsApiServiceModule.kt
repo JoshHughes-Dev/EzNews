@@ -18,12 +18,7 @@ class NewsApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideMoshi() : Moshi {
-        return MoshiFactory.create()
-    }
-
-    @Provides
-    fun provideNewsApiService(@ApplicationContext context: Context, moshi : Moshi): NewsApiService {
-        return NewsApiServiceFactory.create(context, moshi)
+    fun provideNewsApiService(@ApplicationContext context: Context): NewsApiService {
+        return NewsApiServiceFactory.create(context, MoshiFactory.create())
     }
 }

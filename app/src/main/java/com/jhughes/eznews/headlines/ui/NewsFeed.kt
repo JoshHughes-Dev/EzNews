@@ -7,8 +7,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,6 +20,8 @@ import androidx.paging.compose.itemsIndexed
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.headlines.HeadlinesViewModel
@@ -37,44 +38,51 @@ fun NewsFeed(
     val lazyPagingItems: LazyPagingItems<Article> =
         headlinesViewModel.topHeadlines.collectAsLazyPagingItems()
 
+    //val isRefreshing by headlinesViewModel.isRefreshing.collectAsState()
+    val isRefreshing by remember { mutableStateOf(false) }
     val feedListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
+    //todo viewMOdel refresh state?
     Box(modifier = modifier) {
-        LazyColumn(
-            state = feedListState,
-            contentPadding = rememberInsetsPaddingValues(
-                insets = LocalWindowInsets.current.systemBars,
-                additionalBottom = 68.dp
-            )
-        ) {
-            item { headerItem() }
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+            onRefresh = { lazyPagingItems.refresh() }) {
+            LazyColumn(
+                state = feedListState,
+                contentPadding = rememberInsetsPaddingValues(
+                    insets = LocalWindowInsets.current.systemBars,
+                    additionalBottom = 68.dp
+                )
+            ) {
+                item { headerItem() }
 
-            when (val refreshState = lazyPagingItems.loadState.refresh) {
-                is LoadState.Loading -> {
-                    item { NewsFeedLoading() }
-                }
-                is LoadState.Error -> {
-                    item {
-                        NewsFeedError(error = refreshState.error) {
-                            lazyPagingItems.retry()
+                when (val refreshState = lazyPagingItems.loadState.refresh) {
+                    is LoadState.Loading -> {
+                        item { NewsFeedLoading() }
+                    }
+                    is LoadState.Error -> {
+                        item {
+                            NewsFeedError(error = refreshState.error) {
+                                lazyPagingItems.retry()
+                            }
+                        }
+                    }
+                    is LoadState.NotLoading -> {
+                        itemsIndexed(lazyPagingItems) { index, item ->
+                            NewsFeedItem(index, item, onItemSelected = onSelectArticle)
                         }
                     }
                 }
-                is LoadState.NotLoading -> {
-                    itemsIndexed(lazyPagingItems) { index, item ->
-                        NewsFeedItem(index, item, onItemSelected = onSelectArticle)
+                when (val appendState = lazyPagingItems.loadState.append) {
+                    is LoadState.Loading -> {
+                        item { NewsFeedPageLoading() }
                     }
-                }
-            }
-            when (val appendState = lazyPagingItems.loadState.append) {
-                is LoadState.Loading -> {
-                    item { NewsFeedPageLoading() }
-                }
-                is LoadState.Error -> {
-                    item {
-                        NewsFeedPageError(error = appendState.error) {
-                            lazyPagingItems.retry()
+                    is LoadState.Error -> {
+                        item {
+                            NewsFeedPageError(error = appendState.error) {
+                                lazyPagingItems.retry()
+                            }
                         }
                     }
                 }
