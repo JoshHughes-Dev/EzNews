@@ -1,9 +1,11 @@
 package com.jhughes.eznews.data
 
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.jhughes.eznews.data.remote.NewsApiService
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.Article
+import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

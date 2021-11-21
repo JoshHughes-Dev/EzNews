@@ -37,21 +37,14 @@ class HeadlinesViewModel @Inject constructor(
 
     var selectedArticle : Article = Article.empty()
 
-        //private val _isRefreshing : MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    //val isRefreshing : StateFlow<Boolean> = _isRefreshing
+    val isRefreshing : MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val topHeadlines: Flow<PagingData<Article>> = _newsSelection.flatMapLatest {
         newsRepository.topNewsHeadlines(it)
     }.cachedIn(viewModelScope)
 
-
-    fun setNewsCategory(newsCategory: NewsCategory) {
-        _newsSelection.value = _newsSelection.value.copy(category = newsCategory)
-    }
-
-    fun setCountry(country : Country) {
-        _newsSelection.value = _newsSelection.value.copy(country = country)
+    fun setFilters(newsCategory: NewsCategory, country : Country) {
+        _newsSelection.value = _newsSelection.value.copy(category = newsCategory, country = country)
     }
 }

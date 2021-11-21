@@ -20,19 +20,18 @@ object Libs {
 
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.3.1"
-        const val coreKtx = "androidx.core:core-ktx:1.6.0"
-        const val activityKtx = "androidx.activity:activity-ktx:1.3.1"
-        const val activityCompose = "androidx.activity:activity-compose:1.3.1"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.3.6"
-        const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-alpha10"
-        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
+        const val coreKtx = "androidx.core:core-ktx:1.7.0"
+        const val activityKtx = "androidx.activity:activity-ktx:1.4.0"
+        const val activityCompose = "androidx.activity:activity-compose:1.4.0"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.4.0"
+        const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-beta01"
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
 
         const val junit = "junit:junit:4.13"
 
-        const val material = "com.google.android.material:material:1.4.0"
 
         object Compose {
-            const val version = "1.0.4"
+            const val version = "1.1.0-beta03"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
             const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -52,15 +51,15 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.4.0-rc01"
+            private const val version = "2.4.0"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
         }
 
         object Paging {
-            private const val version = "3.1.0-beta01"
+            private const val version = "3.1.0"
             const val runtime = "androidx.paging:paging-runtime:$version"
-            const val compose = "androidx.paging:paging-compose:1.0.0-alpha13"
+            const val compose = "androidx.paging:paging-compose:1.0.0-alpha14"
             //without Android dependencies for use tests
             const val common = "androidx.paging:paging-common:$version"
         }
@@ -91,10 +90,9 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.20.0"
+        private const val version = "0.21.0-beta"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
-        const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"
         const val swipeToRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:$version"

@@ -1,132 +1,107 @@
 package com.jhughes.eznews.headlines.ui
 
-import androidx.compose.foundation.layout.*
+import android.content.Context
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.items
 import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.jhughes.eznews.R
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.domain.model.Article
-import com.jhughes.eznews.headlines.HeadlinesViewModel
-import com.jhughes.eznews.R
-import kotlinx.coroutines.launch
+import java.util.*
 
 @Composable
 fun NewsFeed(
     modifier: Modifier = Modifier,
-    headlinesViewModel: HeadlinesViewModel,
-    headerItem: @Composable () -> Unit = {},
-    onSelectArticle: (Article) -> Unit = {}
+    lazyPagingItems: LazyPagingItems<Article>,
+    calendar: Calendar,
+    onArticleSelected: (Article) -> Unit,
+    onFinishedLoading: () -> Unit
 ) {
-    val lazyPagingItems: LazyPagingItems<Article> =
-        headlinesViewModel.topHeadlines.collectAsLazyPagingItems()
+    Log.d("ComposeTest", "NewsFeed")
+    val context = LocalContext.current
 
-    //val isRefreshing by headlinesViewModel.isRefreshing.collectAsState()
-    val isRefreshing by remember { mutableStateOf(false) }
-    val feedListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-
-    //todo viewMOdel refresh state?
-    Box(modifier = modifier) {
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-            onRefresh = { lazyPagingItems.refresh() }) {
-            LazyColumn(
-                state = feedListState,
-                contentPadding = rememberInsetsPaddingValues(
-                    insets = LocalWindowInsets.current.systemBars,
-                    additionalBottom = 68.dp
-                )
-            ) {
-                item { headerItem() }
-
-                when (val refreshState = lazyPagingItems.loadState.refresh) {
-                    is LoadState.Loading -> {
-                        item { NewsFeedLoading() }
-                    }
-                    is LoadState.Error -> {
-                        item {
-                            NewsFeedError(error = refreshState.error) {
-                                lazyPagingItems.retry()
-                            }
-                        }
-                    }
-                    is LoadState.NotLoading -> {
-                        itemsIndexed(lazyPagingItems) { index, item ->
-                            NewsFeedItem(index, item, onItemSelected = onSelectArticle)
-                        }
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = rememberInsetsPaddingValues(
+            insets = LocalWindowInsets.current.navigationBars
+        )
+    ) {
+        when (val refreshState = lazyPagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                item { NewsFeedLoading() }
+            }
+            is LoadState.Error -> {
+                item {
+                    NewsFeedError(error = refreshState.error) {
+                        lazyPagingItems.retry()
                     }
                 }
-                when (val appendState = lazyPagingItems.loadState.append) {
-                    is LoadState.Loading -> {
-                        item { NewsFeedPageLoading() }
-                    }
-                    is LoadState.Error -> {
-                        item {
-                            NewsFeedPageError(error = appendState.error) {
-                                lazyPagingItems.retry()
-                            }
-                        }
+                onFinishedLoading()
+            }
+            is LoadState.NotLoading -> {
+                items(lazyPagingItems) { item ->
+                    NewsFeedItem(
+                        item,
+                        calendar = calendar,
+                        context = context,
+                        onItemSelected = onArticleSelected
+                    )
+                }
+                onFinishedLoading()
+            }
+        }
+        when (val appendState = lazyPagingItems.loadState.append) {
+            is LoadState.Loading -> {
+                item { NewsFeedPageLoading() }
+            }
+            is LoadState.Error -> {
+                item {
+                    NewsFeedPageError(error = appendState.error) {
+                        lazyPagingItems.retry()
                     }
                 }
             }
         }
-
-        //Threshold for button showing
-        val jumpToTopButtonEnabled = feedListState.firstVisibleItemIndex > 2
-
-        JumpToTopButton(
-            // Only show if the scroller is not at the top
-            enabled = jumpToTopButtonEnabled,
-            onClicked = {
-                coroutineScope.launch {
-                    feedListState.animateScrollToItem(0)
-                }
-            },
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .navigationBarsPadding()
-        )
     }
 }
 
 @Composable
-fun NewsFeedItem(index: Int, item: Article?, onItemSelected: (Article) -> Unit) {
-    if (item != null) {
-        val cardModifier = Modifier.run {
-            if (index == 0) {
-                padding(20.dp)
-            } else {
-                padding(
-                    start = 20.dp,
-                    top = 0.dp,
-                    end = 20.dp,
-                    bottom = 20.dp
-                )
-            }
-        }
-
+fun NewsFeedItem(
+    item: Article?,
+    calendar: Calendar,
+    context: Context,
+    onItemSelected: (Article) -> Unit
+) {
+    Column {
         ArticleItem(
-            modifier = cardModifier,
             article = item,
-            onClick = { article -> onItemSelected(article) })
+            calendar = calendar,
+            context = context,
+            onClick = onItemSelected
+        )
+        Divider()
     }
 }
 

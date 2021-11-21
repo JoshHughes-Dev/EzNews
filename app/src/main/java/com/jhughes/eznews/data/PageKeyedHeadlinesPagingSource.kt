@@ -3,10 +3,10 @@ package com.jhughes.eznews.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.jhughes.eznews.data.remote.NewsApiService
-import com.jhughes.eznews.data.remote.model.toQueryParamValue
 import com.jhughes.eznews.data.remote.model.toDomain
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
+import com.jhughes.eznews.data.remote.model.toQueryParamValue
 import com.jhughes.eznews.domain.model.Article
+import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 
 class PageKeyedHeadlinesPagingSource(
     private val initialKey: HeadlinesPagingKey,

@@ -5,9 +5,23 @@ import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.Image
@@ -15,8 +29,10 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,124 +46,135 @@ import com.jhughes.eznews.domain.model.Source
 import java.util.*
 import kotlin.math.abs
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ArticleItem(
     modifier: Modifier = Modifier,
-    article: Article,
+    article: Article?,
+    calendar: Calendar,
+    context: Context,
     onClick: (Article) -> Unit = {},
 ) {
-    val context = LocalContext.current
-    Card(
-        elevation = 6.dp,
-        shape = RoundedCornerShape(8.dp),
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = {
-                onClick(article)
+                article?.let { onClick(article) }
             })
+            .padding(16.dp)
     ) {
         Column {
-            val imageBackground = if (!isSystemInDarkTheme()) {
-                Color.LightGray
-            } else {
-                Color.DarkGray
-            }
-            Surface(color = imageBackground) {
-
-                val painter = rememberImagePainter(
-                    data = article.urlToImage ?: "",
-                    builder = {
-                        crossfade(true)
-                    }
-                )
-                Image(
-                    painter = painter,
-                    contentDescription = "",
-                    modifier = Modifier.aspectRatio(1.80f),
-                )
-
-                when (painter.state) {
-                    is ImagePainter.State.Loading -> {
-                        Box(Modifier.fillMaxWidth()) {
-                            Image(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .align(Alignment.Center),
-                                imageVector = Icons.Outlined.Image,
-                                colorFilter = ColorFilter.tint(contentColorFor(backgroundColor = Color.Gray)),
-                                contentDescription = ""
-                            )
-                        }
-                    }
-                    is ImagePainter.State.Error -> {
-                        Box(Modifier.fillMaxWidth()) {
-                            Image(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .align(Alignment.Center),
-                                imageVector = Icons.Outlined.Error,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colors.error),
-                                contentDescription = ""
-                            )
-                        }
-                    }
-                }
-            }
+            article?.urlToImage?.let { ArticleImage(it) }
             Column(modifier = Modifier) {
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .padding(top = 12.dp),
-                    text = formatArticleTitle(article.title),
+                    text = formatArticleTitle(article?.title),
                     style = MaterialTheme.typography.h6
                 )
-                if (article.description?.isNotEmpty() == true) {
-                    Text(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 6.dp),
-                        text = article.description,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
-                        style = MaterialTheme.typography.body1
-                    )
-                }
-                Row(
+                Text(
                     modifier = Modifier
-                        .wrapContentHeight()
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = article.source.name.toString(),
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.caption
-                    )
-                    Text(
-                        text = " - ${formatTimeSincePublished(article.publishedAt)}",
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.caption
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(
-                        onClick = { shareArticle(article, context) }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Share,
-                            modifier = Modifier.size(20.dp),
-                            contentDescription = ""
-                        )
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 6.dp),
+                    text = formatArticleDescription(article?.description),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    style = MaterialTheme.typography.body1
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = formatSourceAndTimeSincePublished(article, calendar),
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.caption
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = {
+                        article?.let { shareArticle(article, context) }
                     }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Share,
+                        modifier = Modifier.size(20.dp),
+                        contentDescription = ""
+                    )
                 }
             }
         }
     }
 }
 
-private fun formatArticleTitle(title: String): String {
-    return title.substringBeforeLast(delimiter = " - ")
+
+@OptIn(ExperimentalCoilApi::class)
+@Composable
+fun ArticleImage(url: String) {
+
+    val imageBackground = if (!isSystemInDarkTheme()) {
+        Color.LightGray
+    } else {
+        Color.DarkGray
+    }
+    Surface(
+        modifier = Modifier.aspectRatio(1.80f).clip(RoundedCornerShape(16.dp)),
+        color = imageBackground
+    ) {
+
+        val painter = rememberImagePainter(
+            data = url,
+            builder = {
+                crossfade(true)
+            }
+        )
+        Image(
+            painter = painter,
+            contentDescription = "",
+            contentScale = ContentScale.Crop
+        )
+
+        when (val state = painter.state) {
+            is ImagePainter.State.Loading -> {
+                Box(Modifier.fillMaxSize()) {
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.Center),
+                        imageVector = Icons.Outlined.Image,
+                        colorFilter = ColorFilter.tint(contentColorFor(backgroundColor = Color.Gray)),
+                        contentDescription = ""
+                    )
+                }
+            }
+            is ImagePainter.State.Error -> {
+                Box(Modifier.fillMaxSize()) {
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.Center),
+                        imageVector = Icons.Outlined.Error,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colors.error),
+                        contentDescription = ""
+                    )
+                }
+            }
+            else -> {
+            }
+        }
+    }
+}
+
+private fun formatArticleTitle(title: String?): String {
+    return title?.substringBeforeLast(delimiter = " - ") ?: ""
+}
+
+private fun formatArticleDescription(description: String?): String {
+    return description ?: ""
 }
 
 private fun shareArticle(article: Article, context: Context) {
@@ -159,11 +186,15 @@ private fun shareArticle(article: Article, context: Context) {
     context.startActivity(Intent.createChooser(intent, "Share Article"))
 }
 
-private fun formatTimeSincePublished(date: Date): String {
-    val now = Calendar.getInstance().time
-    val difference: Long = abs(date.time - now.time)
+private fun formatSourceAndTimeSincePublished(article: Article?, calendar: Calendar): String {
+    if (article == null) {
+        return ""
+    }
+    val now = calendar.time
+    val difference: Long = abs(article.publishedAt.time - now.time)
     val differenceInHours: Long = difference / (60 * 60 * 1000)
-    return "$differenceInHours hours ago"
+
+    return "${article.source.name} - $differenceInHours hours ago"
 }
 
 private val dummyData = Article(
@@ -180,7 +211,11 @@ private val dummyData = Article(
 @Composable
 fun ArticleItemPreview() {
     EzNewsTheme(darkTheme = false) {
-        ArticleItem(article = dummyData)
+        NewsFeedItem(
+            item = dummyData,
+            calendar = Calendar.getInstance(),
+            context = LocalContext.current
+        ) {}
     }
 }
 
@@ -188,6 +223,10 @@ fun ArticleItemPreview() {
 @Composable
 fun ArticleItemPreviewDark() {
     EzNewsTheme(darkTheme = true) {
-        ArticleItem(article = dummyData)
+        ArticleItem(
+            article = dummyData,
+            context = LocalContext.current,
+            calendar = Calendar.getInstance()
+        )
     }
 }

@@ -11,31 +11,44 @@ private val DarkColorPalette = darkColors(
     primary = Blue200,
     primaryVariant = Blue400,
     onPrimary = Color.Black,
-    secondary = Yellow400,
-    onSecondary = Color.Black,
     onSurface = Color.White,
     onBackground = Color.White,
-    error = Red300,
-    onError = Color.Black
+)
+
+val DarkColorPaletteAlt = darkColors(
+    primary = Color.Black,
+    onPrimary = Blue200,
+    background = Color.Black,
+    onBackground = Blue200,
+    onSurface = Blue200,
 )
 
 private val LightColorPalette = lightColors(
-    primary = Blue500,
-    primaryVariant = Blue800,
+    primary = BlueM800,
+    primaryVariant = BlueM900,
     onPrimary = Color.White,
-    secondary = Yellow700,
-    secondaryVariant = Yellow800,
     onSecondary = Color.Black,
+    surface = Color.White,
     onSurface = Color.Black,
+    background = Color.White,
     onBackground = Color.Black,
-    error = Red800,
-    onError = Color.White
+)
+
+val LightColorPaletteAlt = lightColors(
+    primary = BlueM800,
+    primaryVariant = BlueM300,
+    onPrimary = Color.White,
+    surface = BlueM500,
+    onSurface = Color.White,
+    background = BlueM700,
+    onBackground = Color.White,
 )
 
 @Composable
 fun EzNewsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit) {
+    content: @Composable () -> Unit
+) {
 
     val colors = if (darkTheme) {
         DarkColorPalette
@@ -47,6 +60,26 @@ fun EzNewsTheme(
         colors = colors,
         typography = typography,
         shapes = shapes,
+        content = content
+    )
+}
+
+@Composable
+fun EzNewsThemeAlt(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+
+    val colors = if (darkTheme) {
+        DarkColorPaletteAlt
+    } else {
+        LightColorPaletteAlt
+    }
+
+    MaterialTheme(
+        colors = colors,
+        typography = typography,
+        shapes = shapesAlt,
         content = content
     )
 }

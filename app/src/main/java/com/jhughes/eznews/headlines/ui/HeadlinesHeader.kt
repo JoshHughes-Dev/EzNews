@@ -1,156 +1,104 @@
 package com.jhughes.eznews.headlines.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
+import com.jhughes.eznews.R
 import com.jhughes.eznews.common.theme.EzNewsTheme
+import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
+import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
-import com.jhughes.eznews.R
-import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.emoji
+
 
 @Composable
 fun HeadlinesHeader(
     modifier: Modifier = Modifier,
-    newsSelection: HeadlinesPagingKey = HeadlinesPagingKey(),
-    onRequestSelectCategory: () -> Unit = {},
-    onRequestSelectCountry: () -> Unit = {}
+    newsSelection: HeadlinesPagingKey = HeadlinesPagingKey()
 ) {
-    Column(modifier) {
-        Box(
-            modifier = Modifier.fillMaxWidth().height(56.dp)
-                .padding(top = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(
-                    if (!isSystemInDarkTheme()) {
-                        R.drawable.ic_eznews_logo_light
-                    } else {
-                        R.drawable.ic_eznews_logo_dark
-                    }
-                ),
-                contentDescription = ""
+    FlowRow(
+        modifier = modifier,
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.Center,
+        crossAxisAlignment = FlowCrossAxisAlignment.Center,
+        crossAxisSpacing = 8.dp
+    ) {
+        HeadlineTitleText(text = stringResource(id = R.string.top))
+        if (newsSelection.category != NewsCategory.ALL) {
+            HeadlineTitleText(text = " ")
+            HeadlineTitleText(
+                text = "${stringResource(id = newsSelection.category.res).uppercase()} ${newsSelection.category.emoji()}"
             )
         }
-        Box(
-            Modifier.fillMaxWidth().padding(horizontal = 12.dp)
-                .padding(top = 16.dp, bottom = 8.dp)
-        ) {
-            FlowRow(
-                mainAxisSize = SizeMode.Expand,
-                mainAxisAlignment = FlowMainAxisAlignment.Center,
-                crossAxisAlignment = FlowCrossAxisAlignment.Center,
-                crossAxisSpacing = 8.dp
-            ) {
-                HeadlineTitleText(text = stringResource(id = R.string.top))
-                if (newsSelection.category != NewsCategory.ALL) {
-                    HeadlineTitleText(text = " ")
-                    Button(
-                        contentPadding = PaddingValues(24.dp, 8.dp),
-                        onClick = onRequestSelectCategory
-                    ) {
-                        HeadlineTitleText(
-                            text = "${stringResource(id = newsSelection.category.res).uppercase()} ${newsSelection.category.emoji()}" )
-                    }
-                }
-                HeadlineTitleText(text = " ")
-                HeadlineTitleText(text = stringResource(R.string.headlines))
-                HeadlineTitleText(text = " ")
-                HeadlineTitleText(text = stringResource(id = R.string.across))
-                HeadlineTitleText(text = " ")
+        HeadlineTitleText(text = " ")
+        HeadlineTitleText(text = stringResource(R.string.headlines))
+        HeadlineTitleText(text = " ")
+        HeadlineTitleText(text = stringResource(id = R.string.across))
+        HeadlineTitleText(text = " ")
 
-                val countryWithThe = newsSelection.country == Country.UNITED_KINGDOM
-                        || newsSelection.country == Country.USA
-                if (countryWithThe) {
-                    HeadlineTitleText(text = stringResource(id = R.string.the))
-                    HeadlineTitleText(text = " ")
-                }
-                Button(
-                    contentPadding = PaddingValues(24.dp, 8.dp),
-                    onClick = onRequestSelectCountry
-                ) {
-                    newsSelection.country.let {
-                        HeadlineTitleText(text = "${stringResource(id = it.res).uppercase()} ${it.countryCode.toFlagEmoji()}")
-                    }
-                }
-            }
+        val countryWithThe = newsSelection.country == Country.UNITED_KINGDOM
+                || newsSelection.country == Country.USA
+        if (countryWithThe) {
+            HeadlineTitleText(text = stringResource(id = R.string.the))
+            HeadlineTitleText(text = " ")
         }
-        if (newsSelection.category == NewsCategory.ALL) {
-            TextButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 8.dp),
-                onClick = onRequestSelectCategory
-            ) {
-                Text(text = stringResource(id = R.string.choose_category))
-            }
+        newsSelection.country.let {
+            HeadlineTitleText(text = "${stringResource(id = it.res).uppercase()} ${it.countryCode.toFlagEmoji()}")
         }
-        Divider()
     }
 }
 
 @Composable
-fun HeadlineTitleText(text : String) =
-    Text(text = text, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+fun HeadlineTitleText(modifier: Modifier = Modifier, color: Color = Color.Unspecified, text: String) =
+    Text(
+        modifier = modifier,
+        text = text,
+        color = color,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
+    )
 
 @Preview
 @Composable
-fun HeaderPreview() {
-    EzNewsTheme() {
-        Surface() {
-            HeadlinesHeader(
-                newsSelection = HeadlinesPagingKey(
-                    country = Country.SOUTH_AFRICA,
-                    category = NewsCategory.ENTERTAINMENT
-                )
-            )
+fun HeadlinesHeaderPreview(
+    @PreviewParameter(LightDarkThemePreviewProvider::class) isDarkTheme : Boolean,
+) {
+    EzNewsTheme(isDarkTheme) {
+        Surface {
+            HeadlinesHeader()
         }
     }
 }
 
 @Preview
 @Composable
-fun HeaderPreviewAll() {
+fun HeadlinesHeaderPreview2(
+    @PreviewParameter(HeadlinesPagingKeyPreviewProvider::class) pagingKey: HeadlinesPagingKey,
+) {
     EzNewsTheme {
         Surface {
-            HeadlinesHeader(
-                newsSelection = HeadlinesPagingKey(
-                    country = Country.UNITED_KINGDOM,
-                    category = NewsCategory.ALL
-                )
-            )
+            HeadlinesHeader(newsSelection = pagingKey)
         }
     }
 }
 
-@Preview
-@Composable
-fun HeaderPreviewDark() {
-    EzNewsTheme(darkTheme = true) {
-        Surface {
-            HeadlinesHeader(
-                newsSelection = HeadlinesPagingKey(
-                    country = Country.UNITED_KINGDOM,
-                    category = NewsCategory.TECHNOLOGY
-                )
-            )
-        }
-    }
+class HeadlinesPagingKeyPreviewProvider : PreviewParameterProvider<HeadlinesPagingKey> {
+    override val values: Sequence<HeadlinesPagingKey> = sequenceOf(
+        HeadlinesPagingKey(country = Country.BRAZIL, category = NewsCategory.BUSINESS),
+    )
 }

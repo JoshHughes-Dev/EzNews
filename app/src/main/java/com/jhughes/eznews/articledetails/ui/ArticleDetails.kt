@@ -1,9 +1,15 @@
 package com.jhughes.eznews.articledetails.ui
 
-import androidx.compose.material.*
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.insets.statusBarsPadding
@@ -18,9 +24,10 @@ import java.util.*
 fun ArticleDetails(viewModel: HeadlinesViewModel, closeDetails : () -> Unit = {}) {
 
     val systemUiController = rememberSystemUiController()
-
-    systemUiController.setStatusBarColor(MaterialTheme.colors.primarySurface)
-    systemUiController.setNavigationBarColor(Color.Transparent)
+    val useDarkIcons = !isSystemInDarkTheme()
+    SideEffect {
+        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
+    }
 
     val article = viewModel.selectedArticle
 

@@ -9,3 +9,9 @@ val shapes = Shapes(
         medium = RoundedCornerShape(4.dp),
         large = RoundedCornerShape(0.dp)
 )
+
+val shapesAlt = Shapes(
+        small = RoundedCornerShape(16.dp),
+        medium = RoundedCornerShape(4.dp),
+        large = RoundedCornerShape(0.dp)
+)

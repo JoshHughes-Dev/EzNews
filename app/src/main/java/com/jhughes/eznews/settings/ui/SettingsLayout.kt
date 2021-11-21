@@ -1,11 +1,18 @@
 package com.jhughes.eznews.settings.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -14,15 +21,17 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.R
+import com.jhughes.eznews.common.theme.EzNewsTheme
 
 @Composable
 fun SettingsLayout(closeSettings: () -> Unit) {
-    val systemUiController = rememberSystemUiController()
 
-    systemUiController.setStatusBarColor(MaterialTheme.colors.primarySurface)
-    systemUiController.setNavigationBarColor(Color.Transparent)
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isSystemInDarkTheme()
+    SideEffect {
+        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
+    }
 
     Scaffold(topBar = {
         TopAppBar(

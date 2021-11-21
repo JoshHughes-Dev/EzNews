@@ -61,7 +61,6 @@ dependencies {
     implementation(Libs.AndroidX.fragmentKtx)
     implementation(Libs.AndroidX.navigationCompose)
     implementation(Libs.AndroidX.hiltNavigationCompose)
-    implementation(Libs.AndroidX.material)
     implementation(Libs.AndroidX.Compose.compiler)
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
@@ -79,7 +78,6 @@ dependencies {
 
     implementation(Libs.Accompanist.insets)
     implementation(Libs.Accompanist.systemUiController)
-    implementation(Libs.Accompanist.placeholder)
     implementation(Libs.Accompanist.flowLayout)
     implementation(Libs.Accompanist.swipeToRefresh)
     implementation(Libs.Accompanist.navigationMaterial)

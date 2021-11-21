@@ -25,7 +25,6 @@ subprojects {
             // Use experimental APIs
             freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
                 add("-Xopt-in=kotlin.RequiresOptIn")
-                add("-Xallow-jvm-ir-dependencies")
                 add("-Xskip-prerelease-check")
             }
         }
