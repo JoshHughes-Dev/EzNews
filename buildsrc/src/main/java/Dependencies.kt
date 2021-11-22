@@ -26,6 +26,7 @@ object Libs {
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.4.0"
         const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-beta01"
         const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
+        const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
 
         const val junit = "junit:junit:4.13"
 
@@ -90,7 +91,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.21.0-beta"
+        private const val version = "0.21.3-beta"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"

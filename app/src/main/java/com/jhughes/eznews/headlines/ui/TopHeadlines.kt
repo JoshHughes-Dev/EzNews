@@ -2,11 +2,8 @@ package com.jhughes.eznews.headlines.ui
 
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BackdropScaffold
-import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -30,9 +27,6 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.jhughes.eznews.common.theme.DarkColorPaletteAlt
-import com.jhughes.eznews.common.theme.EzNewsThemeAlt
-import com.jhughes.eznews.common.theme.LightColorPaletteAlt
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.headlines.HeadlinesViewModel
@@ -87,43 +81,33 @@ fun TopHeadlines(
         val categoryState = remember { mutableStateOf(viewModel.newsSelection.value.category) }
         val countryState = remember { mutableStateOf(viewModel.newsSelection.value.country) }
 
-        BackdropScaffold(
+        NewsBackdropScaffold(
             modifier = Modifier.statusBarsPadding(),
             scaffoldState = scaffoldState,
-            gesturesEnabled = false,
-            persistentAppBar = true,
-            peekHeight = BackdropScaffoldDefaults.PeekHeight + 8.dp,
             appBar = {
-                EzNewsThemeAlt {
-                    TopHeadlinesAppBar(
-                        scaffoldState = scaffoldState,
-                        onRequestFilters = {
-                            if (scaffoldState.isConcealed) {
-                                scope.launch { scaffoldState.reveal() }
-                            } else {
-                                scope.launch { scaffoldState.conceal() }
-                            }
-                        },
-                        onRequestSettings = onSettings,
-                        onConfirmFilters = {
-                            viewModel.setFilters(categoryState.value, countryState.value)
+                TopHeadlinesAppBar(
+                    scaffoldState = scaffoldState,
+                    onRequestFilters = {
+                        if (scaffoldState.isConcealed) {
+                            scope.launch { scaffoldState.reveal() }
+                        } else {
                             scope.launch { scaffoldState.conceal() }
-                        },
-                        backgroundColor = if (!isSystemInDarkTheme()) LightColorPaletteAlt.primary else DarkColorPaletteAlt.background
-                    )
-                }
+                        }
+                    },
+                    onRequestSettings = onSettings,
+                    onConfirmFilters = {
+                        viewModel.setFilters(categoryState.value, countryState.value)
+                        scope.launch { scaffoldState.conceal() }
+                    }
+                )
             },
             backLayerContent = {
-                EzNewsThemeAlt {
-                    HeadlineFilters(
-                        modifier = Modifier.padding(bottom = 24.dp),
-                        categoryState = categoryState,
-                        countryState = countryState
-                    )
-                }
+                HeadlineFilters(
+                    modifier = Modifier.padding(bottom = 24.dp),
+                    categoryState = categoryState,
+                    countryState = countryState
+                )
             },
-            backLayerBackgroundColor = if(!isSystemInDarkTheme()) LightColorPaletteAlt.primary else DarkColorPaletteAlt.background,
-            backLayerContentColor = if(!isSystemInDarkTheme()) LightColorPaletteAlt.onPrimary else DarkColorPaletteAlt.onBackground,
             frontLayerContent = {
                 Column {
                     HeadlinesHeader(

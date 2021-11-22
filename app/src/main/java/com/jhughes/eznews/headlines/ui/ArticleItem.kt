@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,11 +35,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import com.jhughes.eznews.common.ProvideAppTheme
+import com.jhughes.eznews.common.data.AppTheme
+import com.jhughes.eznews.common.isAppInDarkTheme
 import com.jhughes.eznews.common.theme.EzNewsTheme
+import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.Source
 import java.util.*
@@ -116,7 +120,7 @@ fun ArticleItem(
 @Composable
 fun ArticleImage(url: String) {
 
-    val imageBackground = if (!isSystemInDarkTheme()) {
+    val imageBackground = if (!isAppInDarkTheme()) {
         Color.LightGray
     } else {
         Color.DarkGray
@@ -138,7 +142,7 @@ fun ArticleImage(url: String) {
             contentScale = ContentScale.Crop
         )
 
-        when (val state = painter.state) {
+        when (painter.state) {
             is ImagePainter.State.Loading -> {
                 Box(Modifier.fillMaxSize()) {
                     Image(
@@ -209,24 +213,18 @@ private val dummyData = Article(
 
 @Preview(widthDp = 380)
 @Composable
-fun ArticleItemPreview() {
-    EzNewsTheme(darkTheme = false) {
-        NewsFeedItem(
-            item = dummyData,
-            calendar = Calendar.getInstance(),
-            context = LocalContext.current
-        ) {}
-    }
-}
-
-@Preview(widthDp = 380)
-@Composable
-fun ArticleItemPreviewDark() {
-    EzNewsTheme(darkTheme = true) {
-        ArticleItem(
-            article = dummyData,
-            context = LocalContext.current,
-            calendar = Calendar.getInstance()
-        )
+fun ArticleItemPreview(
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
+) {
+    ProvideAppTheme(appTheme) {
+        EzNewsTheme {
+            Surface {
+                NewsFeedItem(
+                    item = dummyData,
+                    calendar = Calendar.getInstance(),
+                    context = LocalContext.current
+                )
+            }
+        }
     }
 }

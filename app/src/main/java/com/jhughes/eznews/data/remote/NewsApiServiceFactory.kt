@@ -1,9 +1,9 @@
 package com.jhughes.eznews.data.remote
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jhughes.eznews.BuildConfig
-import com.jhughes.eznews.data.MoshiFactory
 import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -20,7 +20,10 @@ object NewsApiServiceFactory {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             })
-            .addInterceptor(ChuckerInterceptor.Builder(context).build())
+            .addInterceptor(ChuckerInterceptor.Builder(context)
+                .collector(ChuckerCollector(context, showNotification = false))
+                .build()
+            )
             .addInterceptor(NewsApiKeyInterceptor())
             .build()
 

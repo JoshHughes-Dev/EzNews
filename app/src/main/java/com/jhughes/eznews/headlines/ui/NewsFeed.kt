@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -27,7 +28,10 @@ import androidx.paging.compose.items
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.jhughes.eznews.R
+import com.jhughes.eznews.common.ProvideAppTheme
+import com.jhughes.eznews.common.data.AppTheme
 import com.jhughes.eznews.common.theme.EzNewsTheme
+import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.domain.model.Article
 import java.util.*
 
@@ -92,7 +96,7 @@ fun NewsFeedItem(
     item: Article?,
     calendar: Calendar,
     context: Context,
-    onItemSelected: (Article) -> Unit
+    onItemSelected: (Article) -> Unit = {}
 ) {
     Column {
         ArticleItem(
@@ -172,40 +176,56 @@ fun NewsFeedPageError(error: Throwable, onRetry: () -> Unit = {}) {
 
 @Preview
 @Composable
-fun NewsFeedLoadingPreview() {
-    EzNewsTheme() {
-        Surface {
-            NewsFeedLoading()
+fun NewsFeedLoadingPreview(
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
+) {
+    ProvideAppTheme(appTheme) {
+        EzNewsTheme {
+            Surface {
+                NewsFeedLoading()
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun NewsFeedErrorPreview() {
-    EzNewsTheme() {
-        Surface {
-            NewsFeedError(RuntimeException())
+fun NewsFeedErrorPreview(
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
+) {
+    ProvideAppTheme(appTheme) {
+        EzNewsTheme {
+            Surface {
+                NewsFeedError(RuntimeException())
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun NewsFeedPageLoadingPreview() {
-    EzNewsTheme() {
-        Surface {
-            NewsFeedPageLoading()
+fun NewsFeedPageLoadingPreview(
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
+) {
+    ProvideAppTheme(appTheme) {
+        EzNewsTheme {
+            Surface {
+                NewsFeedPageLoading()
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun NewsFeedPageErrorPreview() {
-    EzNewsTheme() {
-        Surface {
-            NewsFeedPageError(RuntimeException())
+fun NewsFeedPageErrorPreview(
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
+) {
+    ProvideAppTheme(appTheme) {
+        EzNewsTheme {
+            Surface {
+                NewsFeedPageError(RuntimeException())
+            }
         }
     }
 }

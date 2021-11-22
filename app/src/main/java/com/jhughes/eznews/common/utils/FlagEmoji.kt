@@ -16,7 +16,7 @@ fun String?.toFlagEmoji(): String {
     }
 
     val countryCodeCaps =
-        this.toUpperCase(Locale.getDefault()) // upper case is important because we are calculating offset
+        this.uppercase(Locale.getDefault()) // upper case is important because we are calculating offset
     val firstLetter = Character.codePointAt(countryCodeCaps, 0) - 0x41 + 0x1F1E6
     val secondLetter = Character.codePointAt(countryCodeCaps, 1) - 0x41 + 0x1F1E6
 

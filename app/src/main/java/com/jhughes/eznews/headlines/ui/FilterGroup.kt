@@ -14,7 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
-import com.jhughes.eznews.common.theme.EzNewsThemeAlt
+import com.jhughes.eznews.common.ProvideAppTheme
+import com.jhughes.eznews.common.data.AppTheme
+import com.jhughes.eznews.common.theme.EzNewsBackdropContentTheme
 import com.jhughes.eznews.common.ui.SelectableChip
 import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.common.utils.toFlagEmoji
@@ -76,33 +78,37 @@ fun <T> FilterGroup(
 @Preview
 @Composable
 fun FilterGroupPreview(
-    @PreviewParameter(LightDarkThemePreviewProvider::class) isDarkTheme: Boolean,
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
 ) {
-    EzNewsThemeAlt(isDarkTheme) {
-        FilterGroup(
-            modifier = Modifier.background(MaterialTheme.colors.background),
-            title = "News Category",
-            items = NewsCategory.values().toList(),
-            singleRow = false,
-            selectedItem = NewsCategory.ALL,
-            onChipTitleFormat = { stringResource(id = it.res) }
-        )
+    ProvideAppTheme(appTheme) {
+        EzNewsBackdropContentTheme {
+            FilterGroup(
+                modifier = Modifier.background(MaterialTheme.colors.background),
+                title = "News Category",
+                items = NewsCategory.values().toList(),
+                singleRow = false,
+                selectedItem = NewsCategory.ALL,
+                onChipTitleFormat = { stringResource(id = it.res) }
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 fun FilterGroupPreview2(
-    @PreviewParameter(LightDarkThemePreviewProvider::class) isDarkTheme: Boolean,
+    @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
 ) {
-    EzNewsThemeAlt(isDarkTheme) {
-        FilterGroup(
-            modifier = Modifier.background(MaterialTheme.colors.background),
-            title = "Countries",
-            singleRow = true,
-            items = Country.usableSubSet().toList(),
-            selectedItem = Country.UNITED_KINGDOM,
-            onChipTitleFormat = { "${stringResource(id = it.res)} ${it.countryCode.toFlagEmoji()}" }
-        )
+    ProvideAppTheme(appTheme) {
+        EzNewsBackdropContentTheme {
+            FilterGroup(
+                modifier = Modifier.background(MaterialTheme.colors.background),
+                title = "Countries",
+                singleRow = true,
+                items = Country.usableSubSet().toList(),
+                selectedItem = Country.UNITED_KINGDOM,
+                onChipTitleFormat = { "${stringResource(id = it.res)} ${it.countryCode.toFlagEmoji()}" }
+            )
+        }
     }
 }

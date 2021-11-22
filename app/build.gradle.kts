@@ -61,6 +61,7 @@ dependencies {
     implementation(Libs.AndroidX.fragmentKtx)
     implementation(Libs.AndroidX.navigationCompose)
     implementation(Libs.AndroidX.hiltNavigationCompose)
+    implementation(Libs.AndroidX.dataStore)
     implementation(Libs.AndroidX.Compose.compiler)
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
