@@ -1,13 +1,13 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
@@ -15,15 +15,13 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.jhughes.eznews.R
 import com.jhughes.eznews.common.ProvideAppTheme
 import com.jhughes.eznews.common.data.AppTheme
-import com.jhughes.eznews.common.isAppInDarkTheme
 import com.jhughes.eznews.common.theme.EzNewsBackdropContentTheme
+import com.jhughes.eznews.common.ui.EzNewsLogo
 import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,17 +37,7 @@ fun TopHeadlinesAppBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Image(
-                modifier = Modifier.fillMaxHeight(),
-                painter = painterResource(
-                    if (!isAppInDarkTheme()) {
-                        R.drawable.ic_eznews_logo_light
-                    } else {
-                        R.drawable.ic_eznews_logo_dark
-                    }
-                ),
-                contentDescription = ""
-            )
+            EzNewsLogo(modifier.fillMaxHeight())
         },
         actions = {
             val canReveal = scaffoldState.isRevealed || scaffoldState.direction > 0f
@@ -68,7 +56,8 @@ fun TopHeadlinesAppBar(
                 }
             }
         },
-        elevation = 0.dp
+        elevation = 0.dp,
+        backgroundColor = MaterialTheme.colors.background
     )
 }
 

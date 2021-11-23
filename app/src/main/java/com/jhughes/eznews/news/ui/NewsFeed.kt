@@ -1,4 +1,4 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import android.content.Context
 import android.util.Log

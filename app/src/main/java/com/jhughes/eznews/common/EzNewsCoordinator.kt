@@ -12,24 +12,24 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.jhughes.eznews.articledetails.ui.ArticleDetails
+import com.jhughes.eznews.article.ui.ArticleScreen
 import com.jhughes.eznews.common.navigation.defaultEnterTransition
 import com.jhughes.eznews.common.navigation.defaultExitTransition
 import com.jhughes.eznews.common.navigation.defaultPopEnterTransition
 import com.jhughes.eznews.common.navigation.defaultPopExitTransition
-import com.jhughes.eznews.headlines.HeadlinesViewModel
-import com.jhughes.eznews.headlines.ui.TopHeadlines
+import com.jhughes.eznews.news.NewsViewModel
+import com.jhughes.eznews.news.ui.SearchResultsScreen
 import com.jhughes.eznews.settings.SettingsViewModel
 import com.jhughes.eznews.settings.ui.SettingsScreen
 
 internal sealed class NavigationRoute(val route: String) {
 
-    object HomeGraph : NavigationRoute("home") {
-        object HeadlinesScreen : NavigationRoute("home.headlines")
-        object ArticleDetails : NavigationRoute("home.details")
+    object NewsGraph : NavigationRoute("news") {
+        object SearchResultsDestination : NavigationRoute("news.news")
+        object ArticleDestination : NavigationRoute("news.article")
     }
 
-    object SettingsScreen : NavigationRoute("settings")
+    object SettingsDestination : NavigationRoute("settings")
 }
 
 @OptIn(
@@ -45,7 +45,7 @@ fun EzNewsCoordinator() {
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = NavigationRoute.HomeGraph.route,
+        startDestination = NavigationRoute.NewsGraph.route,
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
         popEnterTransition = { defaultPopEnterTransition() },
@@ -53,9 +53,9 @@ fun EzNewsCoordinator() {
     ) {
         Log.d("ComposeTest", "nav host compose")
 
-        homeGraph(navController)
+        newsGraph(navController)
 
-        composable(NavigationRoute.SettingsScreen.route) {
+        composable(NavigationRoute.SettingsDestination.route) {
             val viewModel: SettingsViewModel = hiltViewModel()
             SettingsScreen(viewModel, closeSettings = { navController.popBackStack() })
         }
@@ -66,39 +66,39 @@ fun EzNewsCoordinator() {
     ExperimentalMaterialNavigationApi::class,
     ExperimentalAnimationApi::class
 )
-internal fun NavGraphBuilder.homeGraph(
+internal fun NavGraphBuilder.newsGraph(
     navController: NavController
 ) = navigation(
-    startDestination = NavigationRoute.HomeGraph.HeadlinesScreen.route,
-    route = NavigationRoute.HomeGraph.route
+    startDestination = NavigationRoute.NewsGraph.SearchResultsDestination.route,
+    route = NavigationRoute.NewsGraph.route
 ) {
-    Log.d("ComposeTest", "homeGraph compose")
+    Log.d("ComposeTest", "newsGraph compose")
 
-    composable(NavigationRoute.HomeGraph.HeadlinesScreen.route) {
-        Log.d("ComposeTest", "headlines route compose")
+    composable(NavigationRoute.NewsGraph.SearchResultsDestination.route) {
+        Log.d("ComposeTest", "search results route compose")
         val parentEntry =
-            remember { navController.getBackStackEntry(NavigationRoute.HomeGraph.route) }
-        val viewModel: HeadlinesViewModel = hiltViewModel(parentEntry)
-        TopHeadlines(
+            remember { navController.getBackStackEntry(NavigationRoute.NewsGraph.route) }
+        val viewModel: NewsViewModel = hiltViewModel(parentEntry)
+        SearchResultsScreen(
             viewModel = viewModel,
             onArticleDetails = {
                 viewModel.selectedArticle = it
-                navController.navigate(NavigationRoute.HomeGraph.ArticleDetails.route)
+                navController.navigate(NavigationRoute.NewsGraph.ArticleDestination.route)
             },
             onSettings = {
-                navController.navigate(NavigationRoute.SettingsScreen.route)
+                navController.navigate(NavigationRoute.SettingsDestination.route)
             }
         )
     }
 
     composable(
-        route = NavigationRoute.HomeGraph.ArticleDetails.route
+        route = NavigationRoute.NewsGraph.ArticleDestination.route
     ) {
         val parentEntry =
-            remember { navController.getBackStackEntry(NavigationRoute.HomeGraph.route) }
-        val viewModel: HeadlinesViewModel = hiltViewModel(parentEntry)
+            remember { navController.getBackStackEntry(NavigationRoute.NewsGraph.route) }
+        val viewModel: NewsViewModel = hiltViewModel(parentEntry)
 
-        ArticleDetails(viewModel) {
+        ArticleScreen(viewModel) {
             navController.popBackStack()
         }
     }

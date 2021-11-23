@@ -1,7 +1,6 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,10 +21,11 @@ import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.NewsCategory
+import com.jhughes.eznews.news.ui.common.FilterSection
 
 
 @Composable
-fun <T> FilterGroup(
+fun <T> ChipFilter(
     modifier: Modifier = Modifier,
     title: String = "Group",
     items: List<T> = emptyList(),
@@ -34,14 +34,10 @@ fun <T> FilterGroup(
     onItemSelected: (T) -> Unit = {},
     onChipTitleFormat: @Composable (T) -> String,
 ) {
-    Column(modifier.padding(vertical = 12.dp)) {
-        HeadlineTitleText(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .padding(bottom = 12.dp),
-            color = MaterialTheme.colors.onBackground,
-            text = title
-        )
+    FilterSection(
+        modifier = modifier,
+        title = title,
+    ) {
         if (singleRow) {
             LazyRow(
                 contentPadding = PaddingValues(8.dp)
@@ -73,6 +69,46 @@ fun <T> FilterGroup(
             }
         }
     }
+
+//    Column(modifier.padding(vertical = 12.dp)) {
+//        HeadlineTitleText(
+//            modifier = Modifier
+//                .padding(horizontal = 8.dp)
+//                .padding(bottom = 12.dp),
+//            color = MaterialTheme.colors.onBackground,
+//            text = title
+//        )
+//        if (singleRow) {
+//            LazyRow(
+//                contentPadding = PaddingValues(8.dp)
+//            ) {
+//                items(items) { item ->
+//                    SelectableChip(
+//                        modifier = Modifier.padding(end = 8.dp),
+//                        label = onChipTitleFormat(item),
+//                        contentDescription = "",
+//                        selected = item == selectedItem,
+//                        onClick = { onItemSelected(item) }
+//                    )
+//                }
+//            }
+//        } else {
+//            FlowRow(
+//                modifier = Modifier.padding(8.dp),
+//                crossAxisSpacing = 8.dp
+//            ) {
+//                items.forEach { item ->
+//                    SelectableChip(
+//                        modifier = Modifier.padding(end = 8.dp),
+//                        label = onChipTitleFormat(item),
+//                        contentDescription = "",
+//                        selected = item == selectedItem,
+//                        onClick = { onItemSelected(item) }
+//                    )
+//                }
+//            }
+//        }
+//    }
 }
 
 @Preview
@@ -82,7 +118,7 @@ fun FilterGroupPreview(
 ) {
     ProvideAppTheme(appTheme) {
         EzNewsBackdropContentTheme {
-            FilterGroup(
+            ChipFilter(
                 modifier = Modifier.background(MaterialTheme.colors.background),
                 title = "News Category",
                 items = NewsCategory.values().toList(),
@@ -101,7 +137,7 @@ fun FilterGroupPreview2(
 ) {
     ProvideAppTheme(appTheme) {
         EzNewsBackdropContentTheme {
-            FilterGroup(
+            ChipFilter(
                 modifier = Modifier.background(MaterialTheme.colors.background),
                 title = "Countries",
                 singleRow = true,

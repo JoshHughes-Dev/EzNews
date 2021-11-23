@@ -1,4 +1,4 @@
-package com.jhughes.eznews.headlines
+package com.jhughes.eznews.news
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.jhughes.eznews.domain.model.Article
-import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
 import com.jhughes.eznews.domain.repository.NewsRepository
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @HiltViewModel
-class HeadlinesViewModel @Inject constructor(
+class NewsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val newsRepository: NewsRepository
 ) : ViewModel() {
@@ -44,7 +43,7 @@ class HeadlinesViewModel @Inject constructor(
         newsRepository.topNewsHeadlines(it)
     }.cachedIn(viewModelScope)
 
-    fun setFilters(newsCategory: NewsCategory, country : Country) {
-        _newsSelection.value = _newsSelection.value.copy(category = newsCategory, country = country)
+    fun setFilters(newsSelection : HeadlinesPagingKey) {
+        _newsSelection.value = newsSelection
     }
 }

@@ -1,4 +1,4 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Surface
@@ -17,6 +17,7 @@ import com.jhughes.eznews.common.ProvideAppTheme
 import com.jhughes.eznews.common.data.AppTheme
 import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
+import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
@@ -41,6 +42,7 @@ fun HeadlinesHeader(
             add(stringResource(id = R.string.the))
         }
         add(stringResource(id = newsSelection.country.res).uppercase())
+        add(newsSelection.country.countryCode.toFlagEmoji())
     }.toString()
 
     HeadlineTitleText(

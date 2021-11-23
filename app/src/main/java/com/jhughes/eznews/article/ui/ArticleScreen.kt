@@ -1,4 +1,4 @@
-package com.jhughes.eznews.articledetails.ui
+package com.jhughes.eznews.article.ui
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jhughes.eznews.common.ui.TopScrimmedAppBar
 import com.jhughes.eznews.common.ui.WebComponent
-import com.jhughes.eznews.headlines.HeadlinesViewModel
+import com.jhughes.eznews.news.NewsViewModel
 
 @Composable
-fun ArticleDetails(viewModel: HeadlinesViewModel, closeDetails : () -> Unit = {}) {
+fun ArticleScreen(viewModel: NewsViewModel, closeDetails : () -> Unit = {}) {
 
     val systemUiController = rememberSystemUiController()
     SideEffect {
@@ -26,7 +26,7 @@ fun ArticleDetails(viewModel: HeadlinesViewModel, closeDetails : () -> Unit = {}
 
     Scaffold(topBar = {
         TopScrimmedAppBar(
-            title = { Text(text = article.author.toString()) },
+            title = { Text(text = article.source.name.orEmpty()) },
             navigationIcon = {
                 IconButton(onClick = closeDetails) {
                     Icon(imageVector = Icons.Default.Close, contentDescription = "")

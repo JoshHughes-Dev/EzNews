@@ -19,6 +19,7 @@ class PageKeyedHeadlinesPagingSource(
             val data = newsApiService.getTopHeadlines(
                 country = requestParam.country.countryCode,
                 category = requestParam.category.toQueryParamValue(),
+                query = requestParam.keyword,
                 pageSize = requestParam.pageSize,
                 page = requestParam.page
             )

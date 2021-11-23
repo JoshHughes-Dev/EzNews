@@ -41,6 +41,7 @@ private val LightColorPalette = lightColors(
 )
 
 private val BackDropContentLightColorPalette = LightColorPalette.copy(
+    primary = Color.White,
     primaryVariant = BlueM300,
     background = BlueM700,
     onBackground = Color.White,
@@ -66,7 +67,6 @@ fun EzNewsTheme(
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapes,
         content = content
     )
 }
@@ -89,7 +89,6 @@ fun EzNewsBackdropTheme(
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapes,
     ) {
         CompositionLocalProvider(LocalElevationOverlay provides CustomElevationOverlay) {
             content()
@@ -115,7 +114,6 @@ fun EzNewsBackdropContentTheme(
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapesAlt,
         content = content
     )
 }

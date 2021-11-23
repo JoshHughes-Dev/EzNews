@@ -1,4 +1,4 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldDefaults

@@ -1,4 +1,4 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition

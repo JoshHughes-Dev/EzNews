@@ -1,4 +1,4 @@
-package com.jhughes.eznews.headlines.ui
+package com.jhughes.eznews.news.ui
 
 import android.util.Log
 import androidx.activity.compose.BackHandler
@@ -29,14 +29,14 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.HeadlinesPagingKey
-import com.jhughes.eznews.headlines.HeadlinesViewModel
+import com.jhughes.eznews.news.NewsViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TopHeadlines(
-    viewModel: HeadlinesViewModel,
+fun SearchResultsScreen(
+    viewModel: NewsViewModel,
     onArticleDetails: (Article) -> Unit = {},
     onSettings: () -> Unit
 ) {
@@ -78,8 +78,7 @@ fun TopHeadlines(
             lazyPagingItems.refresh()
         }
     ) {
-        val categoryState = remember { mutableStateOf(viewModel.newsSelection.value.category) }
-        val countryState = remember { mutableStateOf(viewModel.newsSelection.value.country) }
+        val currentNewsSelectionState = remember { mutableStateOf(viewModel.newsSelection.value) }
 
         NewsBackdropScaffold(
             modifier = Modifier.statusBarsPadding(),
@@ -96,7 +95,7 @@ fun TopHeadlines(
                     },
                     onRequestSettings = onSettings,
                     onConfirmFilters = {
-                        viewModel.setFilters(categoryState.value, countryState.value)
+                        viewModel.setFilters(currentNewsSelectionState.value)
                         scope.launch { scaffoldState.conceal() }
                     }
                 )
@@ -104,8 +103,7 @@ fun TopHeadlines(
             backLayerContent = {
                 HeadlineFilters(
                     modifier = Modifier.padding(bottom = 24.dp),
-                    categoryState = categoryState,
-                    countryState = countryState
+                    currentSelectionState = currentNewsSelectionState
                 )
             },
             frontLayerContent = {
