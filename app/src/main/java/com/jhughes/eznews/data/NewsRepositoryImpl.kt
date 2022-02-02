@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.jhughes.eznews.data.remote.NewsApiService
 import com.jhughes.eznews.domain.model.Article
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
+import com.jhughes.eznews.domain.model.NewsPagingKey
 import com.jhughes.eznews.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,7 +16,9 @@ class NewsRepositoryImpl @Inject constructor(
     private val newsApiService: NewsApiService
 ) : NewsRepository {
 
-    override fun topNewsHeadlines(headlinesPagingKey: HeadlinesPagingKey): Flow<PagingData<Article>> {
+    override var selectedArticle: Article? = null
+
+    override fun topNewsHeadlines(headlinesPagingKey: NewsPagingKey.HeadlinesPagingKey): Flow<PagingData<Article>> {
         return Pager(
             PagingConfig(
                 pageSize = headlinesPagingKey.pageSize,
@@ -25,6 +27,20 @@ class NewsRepositoryImpl @Inject constructor(
         ) {
             PageKeyedHeadlinesPagingSource(
                 initialKey = headlinesPagingKey,
+                newsApiService = newsApiService
+            )
+        }.flow
+    }
+
+    override fun allNews(everythingPagingKey: NewsPagingKey.EverythingPagingKey): Flow<PagingData<Article>> {
+        return Pager(
+            PagingConfig(
+                pageSize = everythingPagingKey.pageSize,
+                prefetchDistance = everythingPagingKey.pageSize.div(4)
+            )
+        ) {
+            PageKeyedEverythingPagingSource(
+                initialKey = everythingPagingKey,
                 newsApiService = newsApiService
             )
         }.flow

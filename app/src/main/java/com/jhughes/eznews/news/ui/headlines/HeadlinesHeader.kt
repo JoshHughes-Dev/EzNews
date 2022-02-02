@@ -1,4 +1,4 @@
-package com.jhughes.eznews.news.ui
+package com.jhughes.eznews.news.ui.headlines
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Surface
@@ -19,15 +19,15 @@ import com.jhughes.eznews.common.theme.EzNewsTheme
 import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
+import com.jhughes.eznews.domain.model.NewsPagingKey
 import java.util.*
 
 
 @Composable
 fun HeadlinesHeader(
     modifier: Modifier = Modifier,
-    newsSelection: HeadlinesPagingKey = HeadlinesPagingKey()
+    newsSelection: NewsPagingKey.HeadlinesPagingKey = NewsPagingKey.HeadlinesPagingKey()
 ) {
     val text = StringJoiner(" ").apply {
         add(stringResource(id = R.string.top))
@@ -89,7 +89,7 @@ fun HeadlinesHeaderPreview2(
         EzNewsTheme {
             Surface {
                 HeadlinesHeader(
-                    newsSelection = HeadlinesPagingKey(
+                    newsSelection = NewsPagingKey.HeadlinesPagingKey(
                         country = Country.BRAZIL,
                         category = NewsCategory.BUSINESS
                     )

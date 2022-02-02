@@ -10,19 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.jhughes.eznews.article.ArticleViewModel
 import com.jhughes.eznews.common.ui.TopScrimmedAppBar
 import com.jhughes.eznews.common.ui.WebComponent
-import com.jhughes.eznews.news.NewsViewModel
 
 @Composable
-fun ArticleScreen(viewModel: NewsViewModel, closeDetails : () -> Unit = {}) {
+fun ArticleScreen(viewModel: ArticleViewModel, closeDetails : () -> Unit = {}) {
 
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setSystemBarsColor(Color.Transparent)
     }
 
-    val article = viewModel.selectedArticle
+    val article = viewModel.article
 
     Scaffold(topBar = {
         TopScrimmedAppBar(

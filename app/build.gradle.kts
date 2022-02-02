@@ -83,6 +83,8 @@ dependencies {
     implementation(Libs.Accompanist.swipeToRefresh)
     implementation(Libs.Accompanist.navigationMaterial)
     implementation(Libs.Accompanist.navigationAnimation)
+    implementation(Libs.Accompanist.pager)
+    implementation(Libs.Accompanist.pagerIndicators)
 
     implementation(Libs.Coil.coilCompose)
 

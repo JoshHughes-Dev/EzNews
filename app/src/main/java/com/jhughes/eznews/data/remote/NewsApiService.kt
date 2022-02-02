@@ -1,6 +1,6 @@
 package com.jhughes.eznews.data.remote
 
-import com.jhughes.eznews.data.remote.model.response.HeadlinesResponse
+import com.jhughes.eznews.data.remote.model.response.NewsApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,5 +13,13 @@ interface NewsApiService {
         @Query("q", encoded = true) query: String?,
         @Query("pageSize") pageSize: Int,
         @Query("page") page: Int
-    ): HeadlinesResponse
+    ): NewsApiResponse
+
+    @GET("/v2/everything")
+    suspend fun getEverything(
+        @Query("country") country: String?,
+        @Query("q", encoded = true) query: String?,
+        @Query("pageSize") pageSize: Int,
+        @Query("page") page: Int
+    ) : NewsApiResponse //todo name
 }

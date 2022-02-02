@@ -41,7 +41,7 @@ private val LightColorPalette = lightColors(
 )
 
 private val BackDropContentLightColorPalette = LightColorPalette.copy(
-    primary = Color.White,
+    primary = BlueM700,
     primaryVariant = BlueM300,
     background = BlueM700,
     onBackground = Color.White,

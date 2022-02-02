@@ -12,11 +12,13 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.jhughes.eznews.article.ArticleViewModel
 import com.jhughes.eznews.article.ui.ArticleScreen
 import com.jhughes.eznews.common.navigation.defaultEnterTransition
 import com.jhughes.eznews.common.navigation.defaultExitTransition
 import com.jhughes.eznews.common.navigation.defaultPopEnterTransition
 import com.jhughes.eznews.common.navigation.defaultPopExitTransition
+import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.news.NewsViewModel
 import com.jhughes.eznews.news.ui.SearchResultsScreen
 import com.jhughes.eznews.settings.SettingsViewModel
@@ -94,11 +96,10 @@ internal fun NavGraphBuilder.newsGraph(
     composable(
         route = NavigationRoute.NewsGraph.ArticleDestination.route
     ) {
-        val parentEntry =
-            remember { navController.getBackStackEntry(NavigationRoute.NewsGraph.route) }
-        val viewModel: NewsViewModel = hiltViewModel(parentEntry)
+        val viewModel: ArticleViewModel = hiltViewModel()
 
         ArticleScreen(viewModel) {
+            viewModel.article = Article.empty()
             navController.popBackStack()
         }
     }

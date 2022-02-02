@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.jhughes.eznews.domain.model.Article
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
+import com.jhughes.eznews.domain.model.NewsPagingKey
 import com.jhughes.eznews.domain.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,22 +28,34 @@ class NewsViewModel @Inject constructor(
         Log.d("Headlines", "viewModel created. $this")
     }
 
-    private val _newsSelection : MutableStateFlow<HeadlinesPagingKey> = MutableStateFlow(
-        HeadlinesPagingKey(category = NewsCategory.values().random())
+    private val _newsSelection: MutableStateFlow<NewsPagingKey> = MutableStateFlow(
+        NewsPagingKey.HeadlinesPagingKey(category = NewsCategory.values().random())
     )
 
-    val newsSelection : StateFlow<HeadlinesPagingKey> = _newsSelection
+    val newsSelection: StateFlow<NewsPagingKey> = _newsSelection
 
-    var selectedArticle : Article = Article.empty()
+    var selectedArticle: Article
+        get() = newsRepository.selectedArticle ?: Article.empty()
+        set(value) {
+            newsRepository.selectedArticle = value
+        }
 
-    val isRefreshing : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isRefreshing: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val topHeadlines: Flow<PagingData<Article>> = _newsSelection.flatMapLatest {
-        newsRepository.topNewsHeadlines(it)
-    }.cachedIn(viewModelScope)
+    val newsSearchResults: Flow<PagingData<Article>> =
+        _newsSelection.flatMapLatest { newsSearchFilters ->
+            when (newsSearchFilters) {
+                is NewsPagingKey.HeadlinesPagingKey -> {
+                    newsRepository.topNewsHeadlines(newsSearchFilters)
+                }
+                is NewsPagingKey.EverythingPagingKey -> {
+                    newsRepository.allNews(newsSearchFilters)
+                }
+            }
+        }.cachedIn(viewModelScope)
 
-    fun setFilters(newsSelection : HeadlinesPagingKey) {
+    fun setFilters(newsSelection: NewsPagingKey) {
         _newsSelection.value = newsSelection
     }
 }

@@ -2,6 +2,7 @@ package com.jhughes.eznews.news.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -26,7 +27,7 @@ import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TopHeadlinesAppBar(
+fun NewsBackdropAppBar(
     modifier: Modifier = Modifier,
     scaffoldState: BackdropScaffoldState = BackdropScaffoldState(BackdropValue.Concealed),
     onRequestFilters: () -> Unit = {},
@@ -37,7 +38,7 @@ fun TopHeadlinesAppBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            EzNewsLogo(modifier.fillMaxHeight())
+            EzNewsLogo(modifier.padding(vertical = 4.dp).fillMaxHeight())
         },
         actions = {
             val canReveal = scaffoldState.isRevealed || scaffoldState.direction > 0f
@@ -69,7 +70,7 @@ fun TopHeadlinesAppBarPreview(
 ) {
     ProvideAppTheme(currentAppTheme = appTheme) {
         EzNewsBackdropContentTheme(appTheme) {
-            TopHeadlinesAppBar()
+            NewsBackdropAppBar()
         }
     }
 }
@@ -82,7 +83,7 @@ fun TopHeadlinesAppBarPreview2(
 ) {
     ProvideAppTheme(currentAppTheme = appTheme) {
         EzNewsBackdropContentTheme(appTheme) {
-            TopHeadlinesAppBar(
+            NewsBackdropAppBar(
                 scaffoldState = BackdropScaffoldState(BackdropValue.Revealed)
             )
         }

@@ -4,21 +4,19 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.jhughes.eznews.data.remote.NewsApiService
 import com.jhughes.eznews.data.remote.model.toDomain
-import com.jhughes.eznews.data.remote.model.toQueryParamValue
 import com.jhughes.eznews.domain.model.Article
 import com.jhughes.eznews.domain.model.NewsPagingKey
 
-class PageKeyedHeadlinesPagingSource(
-    private val initialKey: NewsPagingKey.HeadlinesPagingKey,
+class PageKeyedEverythingPagingSource(
+    private val initialKey: NewsPagingKey.EverythingPagingKey,
     private val newsApiService: NewsApiService
-) : PagingSource<NewsPagingKey.HeadlinesPagingKey, Article>() {
-    override suspend fun load(params: LoadParams<NewsPagingKey.HeadlinesPagingKey>): LoadResult<NewsPagingKey.HeadlinesPagingKey, Article> {
+) : PagingSource<NewsPagingKey.EverythingPagingKey, Article>() {
+    override suspend fun load(params: LoadParams<NewsPagingKey.EverythingPagingKey>): PagingSource.LoadResult<NewsPagingKey.EverythingPagingKey, Article> {
         return try {
             val requestParam = params.key ?: initialKey
 
-            val data = newsApiService.getTopHeadlines(
+            val data = newsApiService.getEverything(
                 country = requestParam.country.countryCode,
-                category = requestParam.category.toQueryParamValue(),
                 query = requestParam.keyword,
                 pageSize = requestParam.pageSize,
                 page = requestParam.page
@@ -35,9 +33,9 @@ class PageKeyedHeadlinesPagingSource(
     }
 
     private fun createNextKey(
-        currentKey: NewsPagingKey.HeadlinesPagingKey,
+        currentKey: NewsPagingKey.EverythingPagingKey,
         totalResults: Int
-    ): NewsPagingKey.HeadlinesPagingKey? {
+    ): NewsPagingKey.EverythingPagingKey? {
         val currentMaxResults = currentKey.pageSize * currentKey.page
 
         return if (currentMaxResults < totalResults) {
@@ -47,7 +45,7 @@ class PageKeyedHeadlinesPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<NewsPagingKey.HeadlinesPagingKey, Article>): NewsPagingKey.HeadlinesPagingKey? {
+    override fun getRefreshKey(state: PagingState<NewsPagingKey.EverythingPagingKey, Article>): NewsPagingKey.EverythingPagingKey? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.run { copy(page = page.plus(1)) }
@@ -55,4 +53,3 @@ class PageKeyedHeadlinesPagingSource(
         }
     }
 }
-

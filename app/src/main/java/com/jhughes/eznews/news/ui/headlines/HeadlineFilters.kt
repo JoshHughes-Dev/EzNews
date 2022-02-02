@@ -1,4 +1,4 @@
-package com.jhughes.eznews.news.ui
+package com.jhughes.eznews.news.ui.headlines
 
 import android.util.Log
 import androidx.compose.foundation.ScrollState
@@ -24,8 +24,9 @@ import com.jhughes.eznews.common.theme.EzNewsBackdropContentTheme
 import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
 import com.jhughes.eznews.domain.model.NewsCategory
+import com.jhughes.eznews.domain.model.NewsPagingKey
+import com.jhughes.eznews.news.ui.ChipFilter
 import com.jhughes.eznews.news.ui.common.KeywordFilter
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -34,7 +35,7 @@ fun HeadlineFilters(
     modifier: Modifier = Modifier,
     categories: List<NewsCategory> = NewsCategory.values().toList(),
     countries: List<Country> = Country.usableSubSet().toList(),
-    currentSelectionState: MutableState<HeadlinesPagingKey> = mutableStateOf(HeadlinesPagingKey())
+    currentSelectionState: MutableState<NewsPagingKey.HeadlinesPagingKey> = mutableStateOf(NewsPagingKey.HeadlinesPagingKey())
 ) {
     Log.d("ComposeTest", "HeadlineFilters")
 

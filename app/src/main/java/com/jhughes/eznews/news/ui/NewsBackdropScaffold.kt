@@ -10,9 +10,10 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.LocalWindowInsets
 import com.jhughes.eznews.common.ProvideAppTheme
 import com.jhughes.eznews.common.data.AppTheme
 import com.jhughes.eznews.common.theme.EzNewsBackdropContentTheme
@@ -29,13 +30,15 @@ fun NewsBackdropScaffold(
     backLayerContent: @Composable () -> Unit = {},
     frontLayerContent: @Composable () -> Unit = {},
 ) {
+    val navBarBottom = with(LocalDensity.current) { LocalWindowInsets.current.navigationBars.bottom.toDp() }
+
     EzNewsBackdropTheme {
         BackdropScaffold(
             modifier = modifier,
             scaffoldState = scaffoldState,
             gesturesEnabled = false,
             persistentAppBar = true,
-            peekHeight = BackdropScaffoldDefaults.PeekHeight + 8.dp,
+            headerHeight = BackdropScaffoldDefaults.HeaderHeight + navBarBottom,
             appBar = {
                 EzNewsBackdropContentTheme {
                     appBar()

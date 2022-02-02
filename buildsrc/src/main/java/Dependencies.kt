@@ -98,6 +98,8 @@ object Libs {
         const val swipeToRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
         const val navigationMaterial = "com.google.accompanist:accompanist-navigation-material:$version"
         const val navigationAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
+        const val pager = "com.google.accompanist:accompanist-pager:$version"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:$version"
     }
 
     object Moshi {

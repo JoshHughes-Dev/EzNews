@@ -10,8 +10,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,8 +28,10 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jhughes.eznews.domain.model.Article
-import com.jhughes.eznews.domain.model.HeadlinesPagingKey
+import com.jhughes.eznews.domain.model.NewsPagingKey
 import com.jhughes.eznews.news.NewsViewModel
+import com.jhughes.eznews.news.ui.headlines.HeadlineFilters
+import com.jhughes.eznews.news.ui.headlines.HeadlinesHeader
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -45,7 +47,7 @@ fun SearchResultsScreen(
     val calendar = Calendar.getInstance()
 
     val lazyPagingItems: LazyPagingItems<Article> =
-        viewModel.topHeadlines.collectAsLazyPagingItems()
+        viewModel.newsSearchResults.collectAsLazyPagingItems()
 
     val isRefreshing by viewModel.isRefreshing.collectAsState()
 
@@ -53,8 +55,6 @@ fun SearchResultsScreen(
 
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val scope = rememberCoroutineScope()
-
-    val newsSelection: State<HeadlinesPagingKey> = viewModel.newsSelection.collectAsState()
 
     BackHandler(enabled = scaffoldState.isRevealed) {
         scope.launch {
@@ -84,7 +84,7 @@ fun SearchResultsScreen(
             modifier = Modifier.statusBarsPadding(),
             scaffoldState = scaffoldState,
             appBar = {
-                TopHeadlinesAppBar(
+                NewsBackdropAppBar(
                     scaffoldState = scaffoldState,
                     onRequestFilters = {
                         if (scaffoldState.isConcealed) {
@@ -103,14 +103,14 @@ fun SearchResultsScreen(
             backLayerContent = {
                 HeadlineFilters(
                     modifier = Modifier.padding(bottom = 24.dp),
-                    currentSelectionState = currentNewsSelectionState
+                    currentSelectionState = currentNewsSelectionState as MutableState<NewsPagingKey.HeadlinesPagingKey>
                 )
             },
             frontLayerContent = {
                 Column {
                     HeadlinesHeader(
                         modifier = Modifier.padding(16.dp, 8.dp),
-                        newsSelection = newsSelection.value
+                        newsSelection = currentNewsSelectionState.value as NewsPagingKey.HeadlinesPagingKey
                     )
                     Divider()
                     NewsFeed(
