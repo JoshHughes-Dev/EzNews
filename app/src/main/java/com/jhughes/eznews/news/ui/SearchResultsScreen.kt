@@ -10,8 +10,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +55,8 @@ fun SearchResultsScreen(
 
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val scope = rememberCoroutineScope()
+
+    val newsSelection: State<NewsPagingKey.HeadlinesPagingKey> = viewModel.newsSelection.collectAsState()
 
     BackHandler(enabled = scaffoldState.isRevealed) {
         scope.launch {
@@ -103,14 +105,14 @@ fun SearchResultsScreen(
             backLayerContent = {
                 HeadlineFilters(
                     modifier = Modifier.padding(bottom = 24.dp),
-                    currentSelectionState = currentNewsSelectionState as MutableState<NewsPagingKey.HeadlinesPagingKey>
+                    currentSelectionState = currentNewsSelectionState
                 )
             },
             frontLayerContent = {
                 Column {
                     HeadlinesHeader(
                         modifier = Modifier.padding(16.dp, 8.dp),
-                        newsSelection = currentNewsSelectionState.value as NewsPagingKey.HeadlinesPagingKey
+                        newsSelection = newsSelection.value
                     )
                     Divider()
                     NewsFeed(

@@ -26,7 +26,7 @@ import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.NewsCategory
 import com.jhughes.eznews.domain.model.NewsPagingKey
-import com.jhughes.eznews.news.ui.ChipFilter
+import com.jhughes.eznews.news.ui.common.ChipFilter
 import com.jhughes.eznews.news.ui.common.KeywordFilter
 
 @OptIn(ExperimentalMaterialApi::class)

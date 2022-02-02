@@ -1,4 +1,4 @@
-package com.jhughes.eznews.news.ui
+package com.jhughes.eznews.news.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +21,6 @@ import com.jhughes.eznews.common.ui.preview.LightDarkThemePreviewProvider
 import com.jhughes.eznews.common.utils.toFlagEmoji
 import com.jhughes.eznews.domain.model.Country
 import com.jhughes.eznews.domain.model.NewsCategory
-import com.jhughes.eznews.news.ui.common.FilterSection
 
 
 @Composable
@@ -69,46 +68,6 @@ fun <T> ChipFilter(
             }
         }
     }
-
-//    Column(modifier.padding(vertical = 12.dp)) {
-//        HeadlineTitleText(
-//            modifier = Modifier
-//                .padding(horizontal = 8.dp)
-//                .padding(bottom = 12.dp),
-//            color = MaterialTheme.colors.onBackground,
-//            text = title
-//        )
-//        if (singleRow) {
-//            LazyRow(
-//                contentPadding = PaddingValues(8.dp)
-//            ) {
-//                items(items) { item ->
-//                    SelectableChip(
-//                        modifier = Modifier.padding(end = 8.dp),
-//                        label = onChipTitleFormat(item),
-//                        contentDescription = "",
-//                        selected = item == selectedItem,
-//                        onClick = { onItemSelected(item) }
-//                    )
-//                }
-//            }
-//        } else {
-//            FlowRow(
-//                modifier = Modifier.padding(8.dp),
-//                crossAxisSpacing = 8.dp
-//            ) {
-//                items.forEach { item ->
-//                    SelectableChip(
-//                        modifier = Modifier.padding(end = 8.dp),
-//                        label = onChipTitleFormat(item),
-//                        contentDescription = "",
-//                        selected = item == selectedItem,
-//                        onClick = { onItemSelected(item) }
-//                    )
-//                }
-//            }
-//        }
-//    }
 }
 
 @Preview

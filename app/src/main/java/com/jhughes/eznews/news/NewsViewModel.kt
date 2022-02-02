@@ -28,11 +28,11 @@ class NewsViewModel @Inject constructor(
         Log.d("Headlines", "viewModel created. $this")
     }
 
-    private val _newsSelection: MutableStateFlow<NewsPagingKey> = MutableStateFlow(
+    private val _newsSelection: MutableStateFlow<NewsPagingKey.HeadlinesPagingKey> = MutableStateFlow(
         NewsPagingKey.HeadlinesPagingKey(category = NewsCategory.values().random())
     )
 
-    val newsSelection: StateFlow<NewsPagingKey> = _newsSelection
+    val newsSelection: StateFlow<NewsPagingKey.HeadlinesPagingKey> = _newsSelection
 
     var selectedArticle: Article
         get() = newsRepository.selectedArticle ?: Article.empty()
@@ -45,17 +45,10 @@ class NewsViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val newsSearchResults: Flow<PagingData<Article>> =
         _newsSelection.flatMapLatest { newsSearchFilters ->
-            when (newsSearchFilters) {
-                is NewsPagingKey.HeadlinesPagingKey -> {
-                    newsRepository.topNewsHeadlines(newsSearchFilters)
-                }
-                is NewsPagingKey.EverythingPagingKey -> {
-                    newsRepository.allNews(newsSearchFilters)
-                }
-            }
+            newsRepository.topNewsHeadlines(newsSearchFilters)
         }.cachedIn(viewModelScope)
 
-    fun setFilters(newsSelection: NewsPagingKey) {
+    fun setFilters(newsSelection: NewsPagingKey.HeadlinesPagingKey) {
         _newsSelection.value = newsSelection
     }
 }

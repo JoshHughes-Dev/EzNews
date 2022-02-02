@@ -2,17 +2,15 @@ object Libs {
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.3"
 
-    const val junit = "junit:junit:4.13"
-
     const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     object Kotlin {
-        const val version = "1.5.31"
+        const val version = "1.6.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
         object Coroutines {
-            private const val version = "1.5.2"
+            private const val version = "1.6.0"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
         }
@@ -23,16 +21,15 @@ object Libs {
         const val coreKtx = "androidx.core:core-ktx:1.7.0"
         const val activityKtx = "androidx.activity:activity-ktx:1.4.0"
         const val activityCompose = "androidx.activity:activity-compose:1.4.0"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.4.0"
-        const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-beta01"
-        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-beta01"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.4.1"
+        const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0"
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
 
         const val junit = "junit:junit:4.13"
 
-
         object Compose {
-            const val version = "1.1.0-beta03"
+            const val version = "1.1.0-rc03"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
             const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -91,7 +88,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.21.3-beta"
+        private const val version = "0.22.1-rc"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:$version"

@@ -56,6 +56,7 @@ fun NewsBackdropScaffold(
 }
 
 @Preview(showSystemUi = true)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NewsBackdropScaffoldPreview(
     @PreviewParameter(LightDarkThemePreviewProvider::class) appTheme: AppTheme
